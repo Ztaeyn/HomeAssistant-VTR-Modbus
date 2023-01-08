@@ -1,1 +1,124 @@
+- platform: template
+  switches:
+    vtr300_auto_modus:
+      friendly_name: Auto modus 
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'Auto schedule - Lav') or is_state('sensor.vtr300_modus_status', 'Auto schedule - Normal') or is_state('sensor.vtr300_modus_status', 'Auto schedule - Høy')  }}"
+      turn_on:
+        - service: script.vtr300_auto_modus
+          data:
+            action: "on"
+      turn_off:
+        service: script.vtr300_auto_dummy_av
+        data:
+          action: "off"
 
+    vtr300_party_modus:
+      friendly_name: Party-Modus      
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'Party') }}"        
+      turn_on:
+        service: script.vtr300_party_modus
+        data:
+          action: "on"    
+      turn_off:
+        service: script.vtr300_party_dummy_av
+        data:
+          action: "off"    
+
+    vtr300_boost_modus:
+      friendly_name: Boost-Modus  
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'Boost') }}"         
+      turn_on:
+        service: script.vtr300_boost_modus
+        data:
+          action: "on"    
+      turn_off:
+        service: script.vtr300_boost_dummy_av
+        data:
+          action: "off"   
+
+    vtr300_borte_modus:
+      friendly_name: Borte-Modus     
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'borte') }}"         
+      turn_on:
+        service: script.vtr300_borte_modus
+        data:
+          action: "on"    
+      turn_off:
+        service: script.vtr300_borte_dummy_av
+        data:
+          action: "off"    
+
+    vtr300_ferie_modus:
+      friendly_name: Ferie-Modus       
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'ferie') }}"         
+      turn_on:
+        service: script.vtr300_ferie_modus
+        data:
+          action: "on"    
+      turn_off:
+        service: script.vtr300_ferie_dummy_av
+        data:
+          action: "off"    
+
+    vtr300_man_stopp_modus:
+      friendly_name: Manuell stopp        
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'Manuell STOPP') }}" 
+      turn_on:
+        - service: script.vtr300_man_stopp_modus
+          data:
+            action: "on"    
+      turn_off:
+        service: script.vtr300_man_stopp_dummy_av
+        data:
+          action: "off"
+
+    vtr300_man_lav_modus:
+      friendly_name: Lav hastighet        
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'Manuell Lav') or is_state('sensor.vtr300_modus_status', 'Auto schedule - Lav') or is_state('sensor.vtr300_modus_status', 'PPM Auto - Lav') }}"
+      turn_on:
+        - service: script.vtr300_man_lav_modus  
+          data:
+            action: "on"
+      turn_off:
+        service: script.vtr300_man_lav_dummy_av
+        data:
+          action: "off"
+
+    vtr300_man_normal_modus:
+      friendly_name: Normal hastighet    
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'Manuell Normal') or is_state('sensor.vtr300_modus_status', 'Auto schedule - Normal') or is_state('sensor.vtr300_modus_status', 'PPM Auto - Normal') }}"          
+      turn_on:
+        - service: script.vtr300_man_normal_modus 
+          data:
+            action: "on"    
+      turn_off:
+        service: script.vtr300_man_normal_dummy_av
+        data:
+          action: "off"     
+
+    vtr300_man_hoy_modus:
+      friendly_name: Høy hastighet       
+      value_template: "{{ is_state('sensor.vtr300_modus_status', 'Manuell Høy') or is_state('sensor.vtr300_modus_status', 'Auto schedule - Høy') or is_state('sensor.vtr300_modus_status', 'PPM Auto - Høy') }}"           
+      turn_on:
+        service: script.vtr300_man_hoy_modus
+        data:
+          action: "on"    
+      turn_off:
+        service: script.vtr300_man_hoy_dummy_av
+        data:
+          action: "off"     
+
+- platform: modbus
+  scan_interval: 10
+  registers:
+    - name: vtr300_eco_modus
+      hub: VTR300
+      slave: 1
+      address: 2504
+      command_on: 1  #Aktiver Eco drift basert på temp. offset
+      command_off: 0  #Deaktiver Eco drift
+      verify_state: true
+      input_type: holding
+      verify_register: 2504
+      state_on: 1
+      state_off: 0
