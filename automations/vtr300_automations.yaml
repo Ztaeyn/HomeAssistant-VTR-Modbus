@@ -1,0 +1,45 @@
+- id: vtr300SetSetpointAway
+  alias: VTR300 Set Setpoint Away
+  trigger:
+    platform: state
+    entity_id: input_number.vtr300_borte_modus_varighet_sp
+  action:
+  - service: modbus.write_register
+    data_template:
+      hub: VTR300
+      unit: 1
+      address: 1101
+      value: '{{ states.input_number.vtr300_borte_modus_varighet_sp.state | int }}'
+- id: vtr300GetSetpointAway
+  alias: VTR300 Get Setpoint Away
+  trigger:
+    platform: time_pattern
+    seconds: 10
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.vtr300_borte_modus_varighet_sp
+      value: '{{ states.sensor.vtr300_borte_modus_varighet.state | int }}'
+
+- id: vtr300SetSetpointVacation
+  alias: VTR300 Set Setpoint Vacation
+  trigger:
+    platform: state
+    entity_id: input_number.vtr300_ferie_modus_varighet_sp
+  action:
+  - service: modbus.write_register
+    data_template:
+      hub: VTR300
+      unit: 1
+      address: 1100
+      value: '{{ states.input_number.vtr300_ferie_modus_varighet_sp.state | int }}'
+- id: vtr300GetSetpointVacation
+  alias: VTR300 Get Setpoint Vacation
+  trigger:
+    platform: time_pattern
+    seconds: 10
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.vtr300_ferie_modus_varighet_sp
+      value: '{{ states.sensor.vtr300_ferie_modus_varighet.state | int }}'
