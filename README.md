@@ -6,8 +6,6 @@ The Node Red version has full control of the VTR, but I had issues where it over
 I found his incomplete Home Assistant code, and am working on filling it out for my own experiences.
 
 Known Issues:
-- Setpoint for Away not updated from Input
-- Setpoint for Vacation not updated from Input
 - Original code says Kitchen Fan is running when the Pressure system is active. Not looking into it, presumably just a change of name.
 
 
