@@ -17,7 +17,9 @@ Sources:
 
 Image of my Control Panel with full settings. Adding code for this setup.
 
-<img src="https://user-images.githubusercontent.com/58105460/211211731-1c243f97-ea6d-4b15-986a-7e90c34eb5e4.png" width="400">
+<img src="https://user-images.githubusercontent.com/58105460/212387263-632d10fc-d7a7-40c7-b051-6ed2759dffb1.png" width="400">
+<img src="https://user-images.githubusercontent.com/58105460/212387359-03e06af6-c36a-4640-ae46-f330819ebd80.png" width="400">
+
 
 For the daily driver I have an overview with room cards displaying the operational state.
 
