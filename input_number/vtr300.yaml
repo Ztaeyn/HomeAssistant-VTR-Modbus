@@ -5,7 +5,7 @@ vtr300_eco_offset_temp_sp:
   step: 1
   mode: box
   unit_of_measurement: °C
-  icon: mdi:temperature
+  icon: mdi:thermometer
 
 vtr300_ferie_modus_varighet_sp:
   name: Ferie modus - Ønsket varighet 
@@ -25,11 +25,29 @@ vtr300_borte_modus_varighet_sp:
   unit_of_measurement: t
   icon: mdi:timelapse       
 
-vtr300_ildsted_modus_varighet_sp:
-  name: Ildsted modus - Ønsket varighet
+vtr300_boost_modus_varighet_sp:
+  name: Boost modus - Ønsket varighet
   min: 1
-  max: 60
+  max: 240
   step: 1
   mode: box
   unit_of_measurement: m
-  icon: mdi:timelapse  
+  icon: mdi:timelapse    
+
+vtr300_party_modus_varighet_sp:
+  name: Party modus - Ønsket varighet
+  min: 1
+  max: 8
+  step: 1
+  mode: box
+  unit_of_measurement: t
+  icon: mdi:timelapse    
+
+#vtr300_ildsted_modus_varighet_sp:
+#  name: Ildsted modus - Ønsket varighet
+#  min: 1
+#  max: 60
+#  step: 1
+#  mode: box
+#  unit_of_measurement: m
+#  icon: mdi:timelapse  
