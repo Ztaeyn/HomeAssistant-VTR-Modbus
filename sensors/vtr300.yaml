@@ -16,37 +16,58 @@
       value_template: '{{((((states.sensor.vtr300_tillufts_temperatur.state | float ) - (states.sensor.vtr300_inntaks_temperatur.state | float)) / ((states.sensor.vtr300_avtrekks_temperatur.state | float ) - (states.sensor.vtr300_inntaks_temperatur.state | float))) * 100) | round(1) }}'
       unit_of_measurement: '%'
       friendly_name: "Gjenvinningsgrad"
-    
-    vtr300_tid_til_filterbytte:
+
+    vtr300_tid_til_filterbytte_months:
       friendly_name: 'Neste filter bytte'
       value_template: >- 
         {% if states('sensor.vtr300_tid_til_filter_bytte_s')|int > 1 %}
           {% set time = states('sensor.vtr300_tid_til_filter_bytte_s') | int %}
-          {% set minutes = ((time % 3600) / 60) | int %}
-          {% set hours = ((time % 86400) / 3600) | int %}
           {% set days = (time / 86400) | int %}
+          {% set months = (days / 30) | int %}
           {%- if days > 548 -%}
             Mer en 1.5 år
             {%- else -%}
-            {%- if days > 0 -%}
+             {%- if days > 31 -%}
+              {{ months }} Mnd
+            {%- endif -%}           
+            {%- if days < 30 -%}
               {{ days }}d
-            {%- endif -%}
-            {%- if hours > 0 -%}
-              {%- if days > 0 -%}
-                {{ ' ' }}
-              {%- endif -%}
-              {{ hours }}t
-            {%- endif -%}
-            {%- if minutes > 0 -%}
-              {%- if days > 0 or hours > 0 -%}
-                {{ ' ' }}
-              {%- endif -%}
-              {{ minutes }}m
             {%- endif -%}
           {%- endif -%}    
         {% else %}
           Bytt Filter!
-        {% endif %}     
+        {% endif %} 
+
+#    vtr300_tid_til_filterbytte:
+#      friendly_name: 'Neste filter bytte'
+#      value_template: >- 
+#        {% if states('sensor.vtr300_tid_til_filter_bytte_s')|int > 1 %}
+#          {% set time = states('sensor.vtr300_tid_til_filter_bytte_s') | int %}
+#          {% set minutes = ((time % 3600) / 60) | int %}
+#          {% set hours = ((time % 86400) / 3600) | int %}
+#          {% set days = (time / 86400) | int %}
+#          {%- if days > 548 -%}
+#            Mer en 1.5 år
+#            {%- else -%}
+#            {%- if days > 0 -%}
+#              {{ days }}d
+#            {%- endif -%}
+#            {%- if hours > 0 -%}
+#              {%- if days > 0 -%}
+#                {{ ' ' }}
+#              {%- endif -%}
+#              {{ hours }}t
+#            {%- endif -%}
+#            {%- if minutes > 0 -%}
+#              {%- if days > 0 or hours > 0 -%}
+#                {{ ' ' }}
+#              {%- endif -%}
+#              {{ minutes }}m
+#            {%- endif -%}
+#          {%- endif -%}    
+#        {% else %}
+#          Bytt Filter!
+#        {% endif %}     
 
     vtr300_borte_nedtelling_tid_t:
       friendly_name: 'Gjenstående tid når aktiv'
@@ -165,4 +186,3 @@
           Av
         {% endif %}     
 
-     
