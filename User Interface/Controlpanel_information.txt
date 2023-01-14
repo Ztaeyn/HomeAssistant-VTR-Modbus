@@ -1,0 +1,11 @@
+type: entities
+entities:
+  - entity: sensor.vtr300_inntaks_temperatur
+    name: Inntak Temperatur
+  - entity: sensor.vtr300_avtrekks_temperatur
+    name: Avtrekk Temperatur
+  - entity: sensor.vtr300_kalkulert_fukt_avtrekk
+    name: Avtrekk Fukt
+  - entity: sensor.vtr300_varmegjenvinner
+    name: Varmegjenvinning
+  - entity: sensor.vtr300_tid_til_filterbytte_months
