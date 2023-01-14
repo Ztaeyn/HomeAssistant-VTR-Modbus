@@ -18,6 +18,7 @@ Sources:
 HACS addons used:
 * https://github.com/thomasloven/lovelace-card-mod
 * https://github.com/custom-cards/button-card
+* https://github.com/htmltiger/numberbox-card
 
 Image of my Control Panel with full settings. Adding code for this setup.
 
