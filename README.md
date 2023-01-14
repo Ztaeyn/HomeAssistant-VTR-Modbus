@@ -15,6 +15,10 @@ Sources:
 * Older HA code from GMTrevis: https://community.home-assistant.io/t/systemair-savecare-ventilation-unit/229653/2 
 * New Node-Red/HA code from GMTrevis: https://github.com/GMTrevis/Homeassistant-NodeRed-Systemair-VTR300
 
+HACS addons used:
+* https://github.com/thomasloven/lovelace-card-mod
+* https://github.com/custom-cards/button-card
+
 Image of my Control Panel with full settings. Adding code for this setup.
 
 <img src="https://user-images.githubusercontent.com/58105460/212387263-632d10fc-d7a7-40c7-b051-6ed2759dffb1.png" width="400">
