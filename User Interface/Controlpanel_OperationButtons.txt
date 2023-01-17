@@ -1,224 +1,42 @@
-square: false
-columns: 1
-type: grid
+type: horizontal-stack
 cards:
-  - type: entities
-    entities:
-      - entity: sensor.vtr300_modus_status
-        icon: mdi:message-reply
-      - entity: sensor.vtr300_tilluft_rf
-        icon: mdi:air-filter
-      - entity: sensor.vtr300_avtrekk_rf
-        icon: mdi:air-filter
-      - entity: sensor.vtr300_kalkulert_fukt_avtrekk
-        name: Avtrekk fukt
-      - entity: sensor.vtr300_el_kolbe_av_pa
-        name: Varmeelement
-  - square: false
-    columns: 5
-    type: grid
-    cards:
-      - type: custom:button-card
-        entity: switch.vtr300_auto_modus
-        icon: mdi:fan-auto
-        aspect_ratio: 1/1
-        show_state: false
-        name: Auto
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: switch.vtr300_man_lav_modus
-        icon: mdi:fan-speed-1
-        aspect_ratio: 1/1
-        show_state: false
-        name: Lav
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: switch.vtr300_man_normal_modus
-        icon: mdi:fan-speed-2
-        aspect_ratio: 1/1
-        show_state: false
-        name: Normal
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: switch.vtr300_man_hoy_modus
-        icon: mdi:fan-speed-3
-        aspect_ratio: 1/1
-        show_state: false
-        name: Høy
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: switch.vtr300_party_modus
-        icon: mdi:fan-chevron-up
-        aspect_ratio: 1/1
-        show_state: false
-        name: Party
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: switch.vtr300_boost_modus
-        icon: mdi:fan-plus
-        aspect_ratio: 1/1
-        show_state: false
-        name: Boost
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: switch.vtr300_borte_modus
-        icon: mdi:fan-minus
-        aspect_ratio: 1/1
-        show_state: false
-        name: Borte
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: switch.vtr300_ferie_modus
-        icon: mdi:fan-remove
-        aspect_ratio: 1/1
-        show_state: false
-        name: Ferie
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: switch.vtr300_man_stopp_modus
-        icon: mdi:fan-off
-        aspect_ratio: 1/1
-        show_state: false
-        name: Stopp
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'red' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: sensor.vtr300_modus_status
-        icon: mdi:car-brake-low-pressure
-        aspect_ratio: 1/1
-        show_state: false
-        show_name: true
-        name: Trykkvakt
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'Komfyravtrekk' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-  - type: horizontal-stack
-    cards:
-      - type: custom:button-card
-        color_type: card
-        entity: sensor.vtr300_a_alm
-        aspect_ratio: 2/1
-        show_name: true
-        name: A# Alarm
-        state:
-          - value: true
-            color: red
-            icon: mdi:alert
-            styles:
-              card:
-                - animation: blink 2s ease infinite
-          - operator: default
-            color: green
-            icon: mdi:alarm-light
-      - type: custom:button-card
-        color_type: card
-        entity: sensor.vtr300_b_alm
-        aspect_ratio: 2/1
-        show_name: true
-        name: B# Alarm
-        state:
-          - value: true
-            color: red
-            icon: mdi:alert
-            styles:
-              card:
-                - animation: blink 2s ease infinite
-          - operator: default
-            color: green
-            icon: mdi:alarm-light
-      - type: custom:button-card
-        color_type: card
-        entity: sensor.vtr300_c_alm
-        aspect_ratio: 2/1
-        show_name: true
-        name: C# Alarm
-        state:
-          - value: true
-            color: red
-            icon: mdi:alert
-            styles:
-              card:
-                - animation: blink 2s ease infinite
-          - operator: default
-            color: green
-            icon: mdi:alarm-light
-      - type: custom:button-card
-        color_type: card
-        entity: sensor.vtr300_filter_alm
-        aspect_ratio: 2/1
-        show_name: true
-        name: Filter Alarm
-        state:
-          - value: true
-            color: red
-            icon: mdi:alert
-            styles:
-              card:
-                - animation: blink 2s ease infinite
-          - operator: default
-            color: green
-            icon: mdi:air-filter
-  - type: custom:mushroom-climate-card
-    entity: climate.vent_vsr300
-    name: Systemair Termostat
-  - square: false
-    columns: 1
-    type: grid
-    cards: []
+  - type: custom:mushroom-entity-card
+    entity: sensor.vtr300_modus_status
+    primary_info: none
+    icon_type: none
+  - type: conditional
+    conditions:
+      - entity: switch.vtr300_borte_modus
+        state: 'on'
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.vtr300_borte_nedtelling_tid_t
+      primary_info: none
+      icon_type: none
+  - type: conditional
+    conditions:
+      - entity: switch.vtr300_party_modus
+        state: 'on'
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.vtr300_party_nedtelling_tid_t
+      primary_info: none
+      icon_type: none
+  - type: conditional
+    conditions:
+      - entity: switch.vtr300_boost_modus
+        state: 'on'
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.vtr300_boost_nedtelling_tid_t
+      primary_info: none
+      icon_type: none
+  - type: conditional
+    conditions:
+      - entity: switch.vtr300_ferie_modus
+        state: 'on'
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.vtr300_ferie_nedtelling_tid_t
+      primary_info: none
+      icon_type: none
