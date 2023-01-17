@@ -5,9 +5,17 @@ Credits to GMTrevis who created the original code for Home Assistant, and then i
 The Node Red version has full control of the VTR, but I had issues where it overloaded my Node-Red. 
 I found his incomplete Home Assistant code, and am working on filling it out for my own experiences.
 
-Known Issues:
-- Original code says Kitchen Fan is running when the Pressure system is active. Not looking into it, presumably just a change of name.
+With this you currently can:
+- Change operation Mode
+- Set duration setpoint for Away, Vacation, Boost and Party
+- See alarm status and filter replacement countdown.
+  - TODO: Setup notifications to my phone.
+- Set wanted temperature on the VTR thermostat.
+- Create automations your own automations using the above. 
+  - TODO: Set automatic Away when me and my partner are at Work. 
 
+Known Issues:
+See Issues Tab.
 
 
 Sources:
@@ -19,13 +27,12 @@ HACS addons used:
 * https://github.com/thomasloven/lovelace-card-mod
 * https://github.com/custom-cards/button-card
 * https://github.com/htmltiger/numberbox-card
+* https://github.com/piitaya/lovelace-mushroom
 
 Image of my Control Panel with full settings. A feedback check is added for Setpoints, with a comparison of the input number and the VTR sensor. Green when matching, Red when matching/waiting for sync.
 
-<img src="https://user-images.githubusercontent.com/58105460/212387263-632d10fc-d7a7-40c7-b051-6ed2759dffb1.png" width="400">
-<img src="https://user-images.githubusercontent.com/58105460/212497362-f8131aa3-9545-4121-bf9a-9b69df848d60.png" width="400">
-<img src="https://user-images.githubusercontent.com/58105460/212497381-db61b45a-ba9b-4776-9699-40991e2d892b.png" width="400">
-
+<img src="https://user-images.githubusercontent.com/58105460/212980334-ebb6171f-e2f8-463c-b7aa-30d927fd5b3e.png" width="400">
+<img src="https://user-images.githubusercontent.com/58105460/212980462-d8833cf8-0271-4090-b510-cd9a067c1393.png" width="400">
 
 
 
