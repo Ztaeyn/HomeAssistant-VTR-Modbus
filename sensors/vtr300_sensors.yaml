@@ -94,6 +94,70 @@
           Inaktiv
         {% endif %}             
 
+    vtr300_party_nedtelling_tid_t:
+      friendly_name: 'Gjenstående tid når aktiv'
+      value_template: >- 
+        {% if states('sensor.vtr300_modus_status_register')|int == 2 %}
+          {% set time = states('sensor.vtr300_nedtelling_modus_tid_s') | int %}
+          {% set minutes = ((time % 3600) / 60) | int %}
+          {% set hours = ((time % 86400) / 3600) | int %}
+
+          {%- if time < 60 -%}
+            Mindre en 1 minutt
+            {%- else -%}
+            {%- if hours > 0 -%}
+                {{ hours }}t
+              {%- endif -%}
+            {%- if minutes > 0 -%}
+              {%- if hours > 0 -%}
+                {{ ' ' }}
+              {%- endif -%}
+              {{ minutes }}m
+            {%- endif -%}
+          {%- endif -%}
+        {% else %}
+          Inaktiv
+        {% endif %}   
+
+    vtr300_boost_nedtelling_tid_t:
+      friendly_name: 'Gjenstående tid når aktiv'
+      value_template: >- 
+        {% if states('sensor.vtr300_modus_status_register')|int == 3 %}
+          {% set time = states('sensor.vtr300_nedtelling_modus_tid_s') | int %}
+          {% set minutes = ((time % 3600) / 60) | int %}
+          {% set hours = ((time % 86400) / 3600) | int %}
+
+          {%- if time < 60 -%}
+            Mindre en 1 minutt
+            {%- else -%}
+            {%- if hours > 0 -%}
+                {{ hours }}t
+              {%- endif -%}
+            {%- if minutes > 0 -%}
+              {%- if hours > 0 -%}
+                {{ ' ' }}
+              {%- endif -%}
+              {{ minutes }}m
+            {%- endif -%}
+          {%- endif -%}
+        {% else %}
+          Inaktiv
+        {% endif %}   
+
+    vtr300_ferie_nedtelling_tid_t:
+      friendly_name: 'Gjenstående tid når aktiv'
+      value_template: >- 
+        {% if states('sensor.vtr300_modus_status_register')|int == 6 %}
+          {% set time = states('sensor.vtr300_nedtelling_modus_tid_s') | int %}
+
+          {% set days = (time / 86400) | int %}
+            {%- if days > 0 -%}
+              {{ days }}d
+            {%- endif -%}
+         {% else %}
+          Inaktiv
+        {% endif %}   
+
     vtr300_sommer_vinterd_driftstatus:
       friendly_name: "Aktiv sesong"
       value_template: >-
@@ -146,7 +210,7 @@
         {% elif states('sensor.vtr300_modus_status_register')|int == 5  %}
           Borte
         {% elif states('sensor.vtr300_modus_status_register')|int == 6  %}
-          ferie
+          Ferie
         {% elif states('sensor.vtr300_modus_status_register')|int == 7 %}
           Cooker
         {% elif states('sensor.vtr300_modus_status_register')|int == 8 %}
