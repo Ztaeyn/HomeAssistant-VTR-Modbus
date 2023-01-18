@@ -1,5 +1,5 @@
 # HomeAssistant-VTR-Modbus
-Simple control of Systemair VTR(300) via modbus directly to HA.
+Simple control of Systemair VTR(300) via modbus TCP (Wifi) directly to HA.
 
 Credits to GMTrevis who created the original code for Home Assistant, and then improved it for use via Node-Red.
 The Node Red version has full control of the VTR, but I had issues where it overloaded my Node-Red. 
