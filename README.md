@@ -43,3 +43,23 @@ For the daily driver I have an overview with room cards displaying the operation
 With the room having a stripped down setup, linking via Config to the control panel.
 
 <img src="https://user-images.githubusercontent.com/58105460/211211838-831058e2-42f3-409c-b5d5-5fb6a4974f4a.png" width="400">
+
+
+
+Hardware required: (For my setup)
+A modbus tcp converter. I use the EW11 from Aliexpress, via Wifi.
+https://www.aliexpress.com/item/33036056772.html?spm=a2g0o.order_detail.0.0.2613f19cZlIBKq
+
+How to install this:
+- Copy all my .yaml files to your HA installation folder, and modify the paths in configuration.yaml to match your personal settings if applicable.
+- Modify modbus.yaml with your working modbus settings.
+- Verify HA configuration is OK and reboot. 
+- Copy my HA UI card layouts if you'd like. Take note of the dependency of some HACS addons I've used.
+
+Files explained:
+User Interface/* - Copy of my HA card layout
+modbus.yaml - Stored in the HA root folder. Contains the system specific settings, and the modbus sensors. NOTE: The addresses has an offset of -1 compared to the VTR user manual linked.
+configuration.yaml - Configured paths to the various functions. I have multiple files for various things, therefore I've placed the files under folders in HA as here in github.
+
+
+
