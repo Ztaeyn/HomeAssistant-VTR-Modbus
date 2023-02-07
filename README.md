@@ -20,6 +20,7 @@ See Issues Tab.
 
 Sources:
 * Modbus codes: https://shop.systemair.com/upload/assets/SAVE_MODBUS_VARIABLE_LIST_20190116__REV__29_.PDF
+* VTR Installation manual: https://shop.systemair.com/upload/assets/SAVE_VTR_300B_SERVICE_AND_ACCESSORIES_INSTALLATION_NO_V1_20210616_122140836.PDF?31ae5eca
 * Older HA code from GMTrevis: https://community.home-assistant.io/t/systemair-savecare-ventilation-unit/229653/2 
 * New Node-Red/HA code from GMTrevis: https://github.com/GMTrevis/Homeassistant-NodeRed-Systemair-VTR300
 
