@@ -27,10 +27,10 @@
           {%- if days > 548 -%}
             Mer en 1.5 år
             {%- else -%}
-             {%- if days > 31 -%}
+             {%- if days >= 31 -%}
               {{ months }} Mnd
             {%- endif -%}           
-            {%- if days < 30 -%}
+            {%- if days <= 30 -%}
               {{ days }}d
             {%- endif -%}
           {%- endif -%}    
