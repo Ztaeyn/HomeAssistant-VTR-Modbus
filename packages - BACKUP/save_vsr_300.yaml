@@ -1,0 +1,1307 @@
+################################################################################
+# Modbus on SYSTEMAIR SAVE_VSR_300
+################################################################################
+modbus:
+  - name: VSR300
+    type: tcp
+    host: 192.168.1.204
+    port: 502
+    timeout: 3 #Timeout for slave response in seconds (default=3)
+    delay: 3 #Time to sleep in seconds after connecting and before sending messages (defualt=0)
+
+    climates:
+      - name: vent_VSR300
+        address: 12102
+        slave: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        max_temp: 30
+        min_temp: 15
+        temp_step: 1
+        target_temp_register: 2000
+
+    sensors:
+      - name: vsr300_outdoor_temperature
+        ##hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 12101
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: int16
+      - name: vsr300_supply_temperature
+        ##hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 12102
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: int16
+      - name: vsr300_exhaust_temperature
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 12543 #2050   #NB!EAT/RAT used for extract air controller
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: uint16
+      - name: vsr300_efficiency_temperature
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 12107
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: uint16
+      - name: vsr300_overhetingstemperatur_tilluft
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 12108
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: uint16
+      - name: vsr300_relative_moisture_extraction
+        #hub: VSR300
+        device_class: humidity
+        slave: 1
+        address: 12135
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: uint16
+      - name: vsr300_calculated_moisture_extraction
+        #hub: VSR300
+        device_class: humidity
+        slave: 1
+        address: 2210
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: uint16
+      - name: vsr300_calculated_moisture_intake
+        #hub: VSR300
+        device_class: humidity
+        slave: 1
+        address: 2211
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: uint16
+      - name: vsr300_supply_air_fan
+        #hub: VSR300
+        device_class: power_factor
+        slave: 1
+        address: 14000
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: uint16
+      - name: vsr300_extractor_fan
+        #hub: VSR300
+        device_class: power_factor
+        slave: 1
+        address: 14001
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: uint16
+      - name: vsr300_summer_winter_operation #0=sommardrift, 1=Vinterdrift (status baserat på fukt i innertak)
+        #hub: VSR300
+        slave: 1
+        address: 1038
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_extractor_hood_pressure_switch_off_on
+        #hub: VSR300
+        slave: 1
+        address: 12020
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_TRIAC_after_manual_override #PWM TRIAC output
+        #hub: VSR300
+        device_class: power_factor
+        slave: 1
+        address: 2148
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: uint16
+      - name: vsr300_TRIAC_control_signal_on_off #TRIAC Control signal
+        #hub: VSR300
+        slave: 1
+        address: 14380
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_heat_recovery
+        #hub: VSR300
+        device_class: power_factor
+        slave: 1
+        address: 14102
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: uint16
+      - name: vsr300_filter_replacement_alarm
+        #hub: VSR300
+        slave: 1
+        address: 7006
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_filter_replacement_period_months
+        #hub: VSR300
+        slave: 1
+        address: 7000
+        input_type: holding
+        unit_of_measurement: "md"
+        count: 1
+        data_type: int16
+      - name: vsr300_time_to_filter_replacement_s
+        #hub: VSR300
+        slave: 1
+        address: 7005
+        input_type: holding
+        unit_of_measurement: "s"
+        count: 2
+        data_type: uint32
+      - name: vsr300_mode_status_register
+        #hub: VSR300
+        slave: 1
+        address: 1160 #0=Auto,1=Man,2=Crowded,3=Refresh,4=Fireplace,5=Away,6=Holiday,7-12 not applicable
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_manual_mode_command_register
+        #hub: VSR300
+        slave: 1
+        address: 1130 #0=Man stop,1=Man ???,2=Man Lav,3=Man Normal,4=Man Høy
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_supply_air_sp
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 2000
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: uint16
+      - name: vsr300_exhaust_air_sp
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 2012
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: uint16
+      - name: vsr300_exhaust_air_min_sp
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 2020
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: uint16
+      - name: vsr300_exhaust_air_max_sp
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 2021
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: uint16
+      # 0 = supply reg., 1 = Room reg.(requires room temp sensor, therefore NA), 2 = extract reg.
+      - name: vsr300_supply_air_room_exhaust_reg
+        #hub: VSR300
+        slave: 1
+        address: 2030
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_eco_heat_offset
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 2503 #Temperature offset for heating during Eco mode
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: uint16
+      - name: vsr300_countdown_mode_time_s
+        #hub: VSR300
+        slave: 1
+        address: 1110
+        input_type: holding
+        unit_of_measurement: s
+        count: 1
+        data_type: uint16
+      - name: vsr300_holiday_mode_duration
+        #hub: VSR300
+        slave: 1
+        address: 1100
+        input_type: holding
+        unit_of_measurement: d
+        count: 1
+        data_type: uint16
+      - name: vsr300_away_mode_duration
+        #hub: VSR300
+        slave: 1
+        address: 1101
+        input_type: holding
+        unit_of_measurement: t
+        count: 1
+        data_type: uint16
+      - name: vsr300_fireplace_mode_duration
+        #hub: VSR300
+        slave: 1
+        address: 1102
+        input_type: holding
+        unit_of_measurement: min
+        count: 1
+        data_type: uint16
+      - name: vsr300_refresh_mode_duration
+        #hub: VSR300
+        slave: 1
+        address: 1103
+        input_type: holding
+        unit_of_measurement: min
+        count: 1
+        data_type: uint16
+      - name: vsr300_Crowded_mode_duration
+        #hub: VSR300
+        slave: 1
+        address: 1104
+        input_type: holding
+        unit_of_measurement: t
+        count: 1
+        data_type: uint16
+      - name: vsr300_moisture_extraction_sp
+        #hub: VSR300
+        device_class: humidity
+        slave: 1
+        address: 2202
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: uint16
+      - name: vsr300_fan_speed_comp_read
+        #hub: VSR300
+        device_class: power_factor
+        slave: 1
+        address: 1254
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: int16
+      - name: vsr300_fan_speed_comp_winter
+        #hub: VSR300
+        device_class: power_factor
+        slave: 1
+        address: 1251
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: int16
+      - name: vsr300_fan_speed_comp_winter_start_temp
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 1255
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: int16
+      - name: vsr300_fan_speed_comp_winter_max_temp
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 1253
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: int16
+      - name: vsr300_fan_speed_comp_checked
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 1252
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: int16
+      - name: vsr300_fan_speed_comp_summer
+        #hub: VSR300
+        device_class: power_factor
+        slave: 1
+        address: 1258
+        input_type: holding
+        unit_of_measurement: "%"
+        count: 1
+        data_type: int16
+      - name: vsr300_fan_speed_comp_summer_start_temp
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 1256
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: int16
+      - name: vsr300_fan_speed_comp_max_temp
+        #hub: VSR300
+        device_class: temperature
+        slave: 1
+        address: 1257
+        input_type: holding
+        unit_of_measurement: °C
+        count: 1
+        scale: 0.1
+        offset: 0
+        precision: 1
+        data_type: int16
+      - name: vsr300_a_alarm
+        #hub: VSR300
+        slave: 1
+        address: 15900
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_b_alarm
+        #hub: VSR300
+        slave: 1
+        address: 15901
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_c_alarm
+        #hub: VSR300
+        slave: 1
+        address: 15902
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_filter_warning_alarm
+        #hub: VSR300
+        slave: 1
+        address: 15543
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_filter_alarm
+        #hub: VSR300
+        slave: 1
+        address: 15141
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_supply_air_temp_low_alarm
+        #hub: VSR300
+        slave: 1
+        address: 15176
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_filter_warning_alarm_delay_counter
+        #hub: VSR300
+        slave: 1
+        address: 15548
+        input_type: holding
+        count: 1
+        data_type: uint16
+
+################################################################################
+# INPUT BOOLEAN
+################################################################################
+
+input_boolean:
+  vsr300_auto_mode_status_dummy:
+    name: vsr300 Auto mode status dummy
+    icon: mdi:fan
+  vsr300_crowded_mode_status_dummy:
+    name: vsr300 Crowded mode status dummy
+    icon: mdi:fan
+  vsr300_refresh_mode_status_dummy:
+    name: vsr300 Refresh mode status dummy
+    icon: mdi:fan
+  vsr300_fireplace_mode_status_dummy:
+    name: vsr300 Fireplace mode status dummy
+    icon: mdi:fan
+  vsr300_away_mode_status_dummy:
+    name: vsr300 Away mode status dummy
+    icon: mdi:fan
+  vsr300_holiday_mode_status_dummy:
+    name: vsr300 Holiday mode status dummy
+    icon: mdi:fan
+  vsr300_man_stop_mode_status_dummy:
+    name: vsr300 Manuall stop mode status dummy
+    icon: mdi:fan
+  vsr300_man_low_mode_status_dummy:
+    name: vsr300 Manual Low mode status dummy
+    icon: mdi:fan
+  vsr300_man_normal_mode_status_dummy:
+    name: vsr300 Manual Normal mode status dummy
+    icon: mdi:fan
+  vsr300_man_high_mode_status_dummy:
+    name: vsr300 Manual high mode status dummy
+    icon: mdi:fan
+  vsr300_ppm_mode_auto_enable_mode_status_dummy:
+    name: vsr300 PPM Auto Enable mode status dummy
+    icon: mdi:fan
+
+################################################################################
+# INPUT NUMBER
+################################################################################
+
+input_number:
+  vsr300_eco_offset_temp_sp:
+    name: Eco offset
+    min: 0
+    max: 10
+    step: 1
+    mode: slider
+    unit_of_measurement: °C
+    icon: mdi:thermometer
+
+  vsr300_holiday_mode_duration_sp:
+    name: Holiday mode - Desired duration
+    min: 1
+    max: 365
+    step: 1
+    mode: slider
+    unit_of_measurement: d
+    icon: mdi:timelapse
+
+  vsr300_away_mode_duration_sp:
+    name: Away mode - Desired duration
+    min: 1
+    max: 72
+    step: 1
+    mode: slider
+    unit_of_measurement: t
+    icon: mdi:timelapse
+
+  vsr300_refresh_mode_duration_sp:
+    name: Refresh mode - Desired duration
+    min: 1
+    max: 240
+    step: 1
+    mode: slider
+    unit_of_measurement: m
+    icon: mdi:timelapse
+
+  vsr300_crowded_mode_duration_sp:
+    name: Crowded mode - Desired duration
+    min: 1
+    max: 8
+    step: 1
+    mode: slider
+    unit_of_measurement: t
+    icon: mdi:timelapse
+
+  vsr300_fireplace_mode_duration_sp:
+    name: Fireplace mode - Desired duration
+    min: 1
+    max: 60
+    step: 1
+    mode: slider
+    unit_of_measurement: m
+    icon: mdi:timelapse
+
+################################################################################
+# SENSORS
+################################################################################
+
+sensor:
+  - platform: template
+    sensors:
+      vsr300_supply_air_rf:
+        value_template: "{{((states.sensor.vsr300_supply_air_fan.state | int) * 3) | round(0) }}"
+        friendly_name: "Supply air flow rate"
+        unit_of_measurement: "m³/t"
+  - platform: template
+    sensors:
+      vsr300_exhaust_air_rf:
+        value_template: "{{((states.sensor.vsr300_extractor_fan.state | int) * 3) | round(0) }}"
+        friendly_name: "Exhaust air flow rate"
+        unit_of_measurement: "m³/t"
+  - platform: template
+    sensors:
+      vsr300_recovery_rate:
+        value_template: "{{((((states.sensor.vsr300_supply_temperature.state | float ) - (states.sensor.vsr300_outdoor_temperature.state | float)) / ((states.sensor.vsr300_exhaust_temperature.state | float ) - (states.sensor.vsr300_outdoor_temperature.state | float))) * 100) | round(1) }}"
+        unit_of_measurement: "%"
+        friendly_name: "Recovery rate"
+      vsr300_time_to_filter_change_months:
+        friendly_name: "Next filter change"
+        value_template: >-
+          {% if states('sensor.vsr300_time_to_filter_replacement_s')|int > 1 %}
+            {% set time = states('sensor.vsr300_time_to_filter_replacement_s') | int %}
+            {% set days = (time / 86400) | int %}
+            {% set months = (days / 30) | int %}
+            {%- if days > 548 -%}
+              More than 1.5 year
+              {%- else -%}
+               {%- if days > 31 -%}
+                {{ months }} Mnd
+              {%- endif -%}           
+              {%- if days < 30 -%}
+                {{ days }}d
+              {%- endif -%}
+            {%- endif -%}    
+          {% else %}
+            Change filter!
+          {% endif %}
+
+      vsr300_away_countdown_time_t:
+        friendly_name: "Time remaining when active"
+        value_template: >-
+          {% if states('sensor.vsr300_mode_status_register')|int == 5 %}
+            {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
+            {% set minutes = ((time % 3600) / 60) | int %}
+            {% set hours = ((time % 86400) / 3600) | int %}
+
+            {%- if time < 60 -%}
+              Less than 1 minute
+              {%- else -%}
+              {%- if hours > 0 -%}
+                  {{ hours }}t
+                {%- endif -%}
+              {%- if minutes > 0 -%}
+                {%- if hours > 0 -%}
+                  {{ ' ' }}
+                {%- endif -%}
+                {{ minutes }}m
+              {%- endif -%}
+            {%- endif -%}
+          {% else %}
+            Inactive
+          {% endif %}
+
+      vsr300_crowded_countdown_time_t:
+        friendly_name: "Time remaining when active"
+        value_template: >-
+          {% if states('sensor.vsr300_mode_status_register')|int == 2 %}
+            {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
+            {% set minutes = ((time % 3600) / 60) | int %}
+            {% set hours = ((time % 86400) / 3600) | int %}
+
+            {%- if time < 60 -%}
+              Less than 1 minute
+              {%- else -%}
+              {%- if hours > 0 -%}
+                  {{ hours }}t
+                {%- endif -%}
+              {%- if minutes > 0 -%}
+                {%- if hours > 0 -%}
+                  {{ ' ' }}
+                {%- endif -%}
+                {{ minutes }}m
+              {%- endif -%}
+            {%- endif -%}
+          {% else %}
+            Inactive
+          {% endif %}
+
+      vsr300_refresh_countdown_time_t:
+        friendly_name: "Time remaining when active"
+        value_template: >-
+          {% if states('sensor.vsr300_mode_status_register')|int == 3 %}
+            {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
+            {% set minutes = ((time % 3600) / 60) | int %}
+            {% set hours = ((time % 86400) / 3600) | int %}
+
+            {%- if time < 60 -%}
+              Less than 1 minute
+              {%- else -%}
+              {%- if hours > 0 -%}
+                  {{ hours }}t
+                {%- endif -%}
+              {%- if minutes > 0 -%}
+                {%- if hours > 0 -%}
+                  {{ ' ' }}
+                {%- endif -%}
+                {{ minutes }}m
+              {%- endif -%}
+            {%- endif -%}
+          {% else %}
+            Inactive
+          {% endif %}
+
+      vsr300_holiday_countdown_time_t:
+        friendly_name: "Time remaining when active"
+        value_template: >-
+          {% if states('sensor.vsr300_mode_status_register')|int == 6 %}
+            {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
+
+            {% set days = (time / 86400) | int %}
+              {%- if days > 0 -%}
+                {{ days }}d
+              {%- endif -%}
+           {% else %}
+            Inactive
+          {% endif %}
+
+      vsr300_summer_winter_operational_status:
+        friendly_name: "Active season"
+        value_template: >-
+          {% if states('sensor.vsr300_summer_winter_operation')|int == 0 %}
+            Sommerdrift
+          {% elif states('sensor.vsr300_summer_winter_operation')|int == 1 %}
+            Vinterdrift
+          {% else %}
+              Stein dau
+          {% endif %}
+
+      vsr300_regulation_mode:
+        friendly_name: "Regulation"
+        value_template: >-
+          {% if states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 0 %}
+            Supply air regulation
+          {% elif states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 1 %}
+            Rom reg.
+          {% elif states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 2 %}
+            Exhaust regulation
+          {% else %}
+            Stone dead
+          {% endif %}
+
+      vsr300_mode_status:
+        friendly_name: "Mode"
+        value_template: >-
+          {% if states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 2 %}
+            Auto schedule - Low
+          {% elif states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 3 %}
+            Auto schedule - Normal           
+          {% elif states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 4 %}
+            Auto schedule - High                       
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 0 %}
+            Manual STOP
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 1 %}
+            Manual Shitstorm? 
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 2 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+            Manual Low 
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 3 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+            Manual Normal
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 4 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+            Manual High                     
+          {% elif states('sensor.vsr300_mode_status_register')|int == 3  %}
+            Refresh
+          {% elif states('sensor.vsr300_mode_status_register')|int == 2  %}
+            Crowded
+          {% elif states('sensor.vsr300_mode_status_register')|int == 4  %}
+            Fireplace
+          {% elif states('sensor.vsr300_mode_status_register')|int == 5  %}
+            Away
+          {% elif states('sensor.vsr300_mode_status_register')|int == 6  %}
+            Holiday
+          {% elif states('sensor.vsr300_mode_status_register')|int == 7 %}
+            Cooker
+          {% elif states('sensor.vsr300_mode_status_register')|int == 8 %}
+            Hood
+          {% elif states('sensor.vsr300_mode_status_register')|int == 9 %}
+            Vacuum cleaner
+          {% elif states('sensor.vsr300_mode_status_register')|int == 10 %}
+            CDI1
+          {% elif states('sensor.vsr300_mode_status_register')|int == 11 %}
+            CDI2
+          {% elif states('sensor.vsr300_mode_status_register')|int == 12 %}
+            Cooker hood          
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 2 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
+            PPM Auto - Low  
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 3 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
+            PPM Auto - Normal
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 4 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
+            PPM Auto - High   
+          {% elif states('sensor.vsr300_mode_status_register')|int == 3 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
+            PPM Auto - Refresh            
+          {% else %}
+            WTF
+          {% endif %}
+
+      vsr300_manual_button_mode_status:
+        friendly_name: "Manual button mode status"
+        value_template: >-
+          {% if states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int > 0 %}
+            Auto schedule
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int > 0 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+            Manual
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int > 0 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
+            PPM Auto         
+          {% elif states('sensor.vsr300_mode_status_register')|int > 0 and states('sensor.vsr300_manual_mode_command_register')|int > 0 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+            Standby            
+          {% else %}
+            Off
+          {% endif %}
+
+################################################################################
+# Switches
+################################################################################
+
+switch:
+  - platform: template
+    switches:
+      vsr300_auto_mode:
+        friendly_name: Auto mode
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Auto schedule - Low') or is_state('sensor.vsr300_mode_status', 'Auto schedule - Normal') or is_state('sensor.vsr300_mode_status', 'Auto schedule - High')  }}"
+        turn_on:
+          - service: script.vsr300_auto_mode
+            data:
+              action: "on"
+        turn_off:
+          service: script.vsr300_auto_dummy_off
+          data:
+            action: "off"
+
+      vsr300_crowded_mode:
+        friendly_name: Crowded-mode
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Crowded') }}"
+        turn_on:
+          service: script.vsr300_crowded_mode
+          data:
+            action: "on"
+        turn_off:
+          service: script.vsr300_crowded_dummy_off
+          data:
+            action: "off"
+
+      vsr300_fireplace_mode:
+        friendly_name: Fireplace-mode
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Fireplace') }}"
+        turn_on:
+          service: script.vsr300_fireplace_mode
+          data:
+            action: "on"
+        turn_off:
+          service: script.vsr300_fireplace_dummy_off
+          data:
+            action: "off"
+
+      vsr300_refresh_mode:
+        friendly_name: Refresh-mode
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Refresh') }}"
+        turn_on:
+          service: script.vsr300_refresh_mode
+          data:
+            action: "on"
+        turn_off:
+          service: script.vsr300_refresh_dummy_off
+          data:
+            action: "off"
+
+      vsr300_away_mode:
+        friendly_name: Away-mode
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Away') }}"
+        turn_on:
+          service: script.vsr300_away_mode
+          data:
+            action: "on"
+        turn_off:
+          service: script.vsr300_away_dummy_off
+          data:
+            action: "off"
+
+      vsr300_holiday_mode:
+        friendly_name: Holiday-mode
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Holiday') }}"
+        turn_on:
+          service: script.vsr300_holiday_mode
+          data:
+            action: "on"
+        turn_off:
+          service: script.vsr300_holiday_dummy_off
+          data:
+            action: "off"
+
+      vsr300_man_stop_mode:
+        friendly_name: Manual stop
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Manual STOP') }}"
+        turn_on:
+          - service: script.vsr300_man_stop_mode
+            data:
+              action: "on"
+        turn_off:
+          service: script.vsr300_man_stop_dummy_off
+          data:
+            action: "off"
+
+      vsr300_man_low_mode:
+        friendly_name: Low speed
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Manual Low') or is_state('sensor.vsr300_mode_status', 'Auto schedule - Low') or is_state('sensor.vsr300_mode_status', 'PPM Auto - Low') }}"
+        turn_on:
+          - service: script.vsr300_man_low_mode
+            data:
+              action: "on"
+        turn_off:
+          service: script.vsr300_man_low_dummy_off
+          data:
+            action: "off"
+
+      vsr300_man_normal_mode:
+        friendly_name: Normal speed
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Manual Normal') or is_state('sensor.vsr300_mode_status', 'Auto schedule - Normal') or is_state('sensor.vsr300_mode_status', 'PPM Auto - Normal') }}"
+        turn_on:
+          - service: script.vsr300_man_normal_mode
+            data:
+              action: "on"
+        turn_off:
+          service: script.vsr300_man_normal_dummy_off
+          data:
+            action: "off"
+
+      vsr300_man_high_mode:
+        friendly_name: High speed
+        value_template: "{{ is_state('sensor.vsr300_mode_status', 'Manual High') or is_state('sensor.vsr300_mode_status', 'Auto schedule - High') or is_state('sensor.vsr300_mode_status', 'PPM Auto - High') }}"
+        turn_on:
+          service: script.vsr300_man_high_mode
+          data:
+            action: "on"
+        turn_off:
+          service: script.vsr300_man_high_dummy_off
+          data:
+            action: "off"
+
+  - platform: modbus
+    scan_interval: 10
+    registers:
+      - name: vsr300_eco_mode
+        hub: vsr300
+        slowe: 1
+        address: 2504
+        command_on: 1 #Enable Eco operation based on temp. offset
+        command_off: 0 #Disable Eco operation
+        verify_state: true
+        input_type: holding
+        verify_register: 2504
+        state_on: 1
+        state_off: 0
+
+################################################################################
+# Script
+################################################################################
+script:
+  vsr300_man_stop_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_man_stop_mode_status_dummy
+      #Activate manual mode before speed
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1130
+          value: 0
+  vsr300_man_stop_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_man_stop_mode_status_dummy
+
+  vsr300_man_low_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_man_low_mode_status_dummy
+      #Activate manual mode before speed
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 2
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1130
+          value: 2
+  vsr300_man_low_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_man_low_mode_status_dummy
+
+  vsr300_man_normal_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_man_normal_mode_status_dummy
+      #Activate manual mode before speed
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 2
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1130
+          value: 3
+  vsr300_man_normal_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_man_normal_mode_status_dummy
+
+  vsr300_man_high_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_man_high_mode_status_dummy
+      #Activate manual mode before speed
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 2
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1130
+          value: 4
+  vsr300_man_high_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_man_high_mode_status_dummy
+
+  vsr300_auto_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_auto_mode_status_dummy
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 1
+  vsr300_auto_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_auto_mode_status_dummy
+
+  vsr300_crowded_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_crowded_mode_status_dummy
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 3
+  vsr300_crowded_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_crowded_mode_status_dummy
+
+  vsr300_refresh_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_refresh_mode_status_dummy
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 4
+  vsr300_refresh_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_refresh_mode_status_dummy
+
+  vsr300_fireplace_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_refresh_mode_status_dummy
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 4
+  vsr300_fireplace_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_fireplace_mode_status_dummy
+
+  vsr300_away_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_away_mode_status_dummy
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_holiday_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 6
+  vsr300_away_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_away_mode_status_dummy
+
+  vsr300_holiday_mode:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.vsr300_holiday_mode_status_dummy
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_stop_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_low_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_normal_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_man_high_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_crowded_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_auto_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_refresh_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_fireplace_mode
+      - service: switch.turn_off
+        entity_id: switch.vsr300_away_mode
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1161
+          value: 7
+  vsr300_holiday_dummy_off:
+    sequence:
+      service: input_boolean.turn_off
+      entity_id: input_boolean.vsr300_holiday_mode_status_dummy
+
+  vsr300_away_setpoint:
+    sequence:
+      - delay: "00:00:02"
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1102
+          value: 70
