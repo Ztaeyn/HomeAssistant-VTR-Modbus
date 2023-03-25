@@ -608,7 +608,7 @@ sensor:
           {% endif %}
 
       vsr300_away_countdown_time_t:
-        friendly_name: "Time remaining when active"
+        friendly_name: "Time remaining when active - Away"
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 5 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -633,7 +633,7 @@ sensor:
           {% endif %}
 
       vsr300_crowded_countdown_time_t:
-        friendly_name: "Time remaining when active"
+        friendly_name: "Time remaining when active - Crowded"
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 2 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -658,7 +658,7 @@ sensor:
           {% endif %}
 
       vsr300_refresh_countdown_time_t:
-        friendly_name: "Time remaining when active"
+        friendly_name: "Time remaining when active - Refresh"
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 3 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -682,8 +682,33 @@ sensor:
             Inactive
           {% endif %}
 
+      vsr300_fireplace_countdown_time_t:
+        friendly_name: "Time remaining when active - Fireplace"
+        value_template: >-
+          {% if states('sensor.vsr300_mode_status_register')|int == 4 %}
+            {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
+            {% set minutes = ((time % 3600) / 60) | int %}
+            {% set hours = ((time % 86400) / 3600) | int %}
+
+            {%- if time < 60 -%}
+              Less than 1 minute
+              {%- else -%}
+              {%- if hours > 0 -%}
+                  {{ hours }}t
+                {%- endif -%}
+              {%- if minutes > 0 -%}
+                {%- if hours > 0 -%}
+                  {{ ' ' }}
+                {%- endif -%}
+                {{ minutes }}m
+              {%- endif -%}
+            {%- endif -%}
+          {% else %}
+            Inactive
+          {% endif %}
+
       vsr300_holiday_countdown_time_t:
-        friendly_name: "Time remaining when active"
+        friendly_name: "Time remaining when active - Holiday"
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 6 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -1197,7 +1222,7 @@ script:
   vsr300_fireplace_mode:
     sequence:
       - service: input_boolean.turn_on
-        entity_id: input_boolean.vsr300_refresh_mode_status_dummy
+        entity_id: input_boolean.vsr300_fireplace_mode_status_dummy
       - service: switch.turn_off
         entity_id: switch.vsr300_man_stop_mode
       - service: switch.turn_off
@@ -1222,7 +1247,7 @@ script:
           hub: VSR300
           unit: 1
           address: 1161
-          value: 4
+          value: 5
   vsr300_fireplace_dummy_off:
     sequence:
       service: input_boolean.turn_off
