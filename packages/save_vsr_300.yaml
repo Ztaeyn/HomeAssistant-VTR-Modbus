@@ -507,9 +507,6 @@ input_boolean:
   vsr300_man_high_mode_status_dummy:
     name: vsr300 Manual high mode status dummy
     icon: mdi:fan
-  vsr300_ppm_mode_auto_enable_mode_status_dummy:
-    name: vsr300 PPM Auto Enable mode status dummy
-    icon: mdi:fan
 
 ################################################################################
 # INPUT NUMBER
@@ -767,11 +764,11 @@ sensor:
             Manual STOP
           {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 1 %}
             Manual Shitstorm? 
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 2 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_mode_status_dummy', 'off') %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 2 %}
             Manual Low 
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 3 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_mode_status_dummy', 'off') %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 3 %}
             Manual Normal
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 4 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_mode_status_dummy', 'off') %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 4 %}
             Manual High                     
           {% elif states('sensor.vsr300_mode_status_register')|int == 3  %}
             Refresh
@@ -795,14 +792,6 @@ sensor:
             CDI2
           {% elif states('sensor.vsr300_mode_status_register')|int == 12 %}
             Cooker hood          
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 2 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
-            PPM Auto - Low  
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 3 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
-            PPM Auto - Normal
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 4 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
-            PPM Auto - High   
-          {% elif states('sensor.vsr300_mode_status_register')|int == 3 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
-            PPM Auto - Refresh            
           {% else %}
             WTF
           {% endif %}
@@ -812,11 +801,9 @@ sensor:
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int > 0 %}
             Auto schedule
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int > 0 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int > 0 %}
             Manual
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int > 0 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'on') %}
-            PPM Auto         
-          {% elif states('sensor.vsr300_mode_status_register')|int > 0 and states('sensor.vsr300_manual_mode_command_register')|int > 0 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+          {% elif states('sensor.vsr300_mode_status_register')|int > 1 and states('sensor.vsr300_manual_mode_command_register')|int > 0 %}
             Standby            
           {% else %}
             Off
@@ -1339,3 +1326,134 @@ script:
           unit: 1
           address: 1102
           value: 70
+
+automation:
+  - id: "vsr300getsetpoints"
+    alias: VSR300 Get setpoints
+    description: ""
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.vsr300_eco_heat_offset
+      - platform: state
+        entity_id:
+          - input_number.vsr300_away_mode_duration_sp
+      - platform: state
+        entity_id:
+          - input_number.vsr300_crowded_mode_duration_sp
+      - platform: state
+        entity_id:
+          - input_number.vsr300_fireplace_mode_duration_sp
+      - platform: state
+        entity_id:
+          - input_number.vsr300_holiday_mode_duration_sp
+      - platform: state
+        entity_id:
+          - input_number.vsr300_refresh_mode_duration_sp
+    condition: []
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_eco_offset_temp_sp
+          value: "{{ states('sensor.vsr300_eco_heat_offset') | int }}"
+        alias: Get setpoint eco offset temp
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_away_mode_duration_sp
+          value: "{{ states('sensor.vsr300_away_mode_duration') | int }}"
+        alias: Get setpoint away
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_crowded_mode_duration
+          value: "{{ states('sensor.vsr300_crowded_mode_duration') | int }}"
+        alias: Get setpoint crowded
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_fireplace_mode_duration_sp
+          value: "{{ states('sensor.vsr300_fireplace_mode_duration') | int }}"
+        alias: Get setpoint fireplace
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_holiday_mode_duration_sp
+          value: "{{ states('sensor.vsr300_holiday_mode_duration') | int }}"
+        alias: Get setpoint holiday
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_refresh_mode_duration_sp
+          value: "{{ states('sensor.vsr300_refresh_mode_duration') | int }}"
+        alias: Get setpoint refresh
+
+  - id: "vsr300SetSetpointCrowded"
+    alias: vsr300 Set Setpoint Crowded Mode
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_crowded_mode_duration_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1104
+          value: "{{ states.input_number.vsr300_crowded_mode_duration_sp.state | int }}"
+
+  - id: "vsr300SetSetpointEco"
+    alias: vsr300 Set Setpoint Eco Mode
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_eco_offset_temp_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 2503
+          value: "{{ states.input_number.vsr300_eco_offset_temp_sp.state | int * 10 }}"
+
+  - id: "vsr300SetSetpointFireplace"
+    alias: vsr300 Set Setpoint Fireplace Mode
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_fireplace_mode_duration_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1102
+          value: "{{ states.input_number.vsr300_fireplace_mode_duration_sp.state | int }}"
+
+  - id: "vsr300SetSetpointHoliday"
+    alias: vsr300 Set Setpoint Holiday
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_holiday_mode_duration_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1100
+          value: "{{ states.input_number.vsr300_holiday_mode_duration_sp.state | int }}"
+
+  - id: "vsr300SetSetpointRefresh"
+    alias: vsr300 Set Setpoint Refresh Mode
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_refresh_mode_duration_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1103
+          value: "{{ states('input_number.vsr300_refresh_mode_duration_sp') | int }}"
