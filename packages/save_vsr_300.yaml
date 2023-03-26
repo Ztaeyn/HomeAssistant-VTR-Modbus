@@ -127,7 +127,7 @@ modbus:
         unit_of_measurement: "%"
         count: 1
         data_type: uint16
-      - name: vsr300_summer_winter_operation #0=sommardrift, 1=Vinterdrift (status baserat på fukt i innertak)
+      - name: vsr300_summer_winter_operation #Actual seasson for Demand Control: 0: Summer,1: Winter
         #hub: VSR300
         slave: 1
         address: 1038
@@ -141,7 +141,7 @@ modbus:
         input_type: holding
         count: 1
         data_type: uint16
-      - name: vsr300_TRIAC_after_manual_override #PWM TRIAC output
+      - name: vsr300_TRIAC_after_manual_override #PWM TRIAC after manual override
         #hub: VSR300
         device_class: power_factor
         slave: 1
@@ -192,14 +192,21 @@ modbus:
       - name: vsr300_mode_status_register
         #hub: VSR300
         slave: 1
-        address: 1160 #0=Auto,1=Man,2=Crowded,3=Refresh,4=Fireplace,5=Away,6=Holiday,7-12 not applicable
+        address: 1160 #Active User mode.0: Auto,1: Manual,2: Crowded,3: Refresh,4: Fireplace,5: Away,6: Holiday,7: Cooker Hood,8: Vacuum Cleaner,9: CDI1,10: CDI2,11: CDI3,12: PressureGuard
         input_type: holding
         count: 1
         data_type: uint16
       - name: vsr300_manual_mode_command_register
         #hub: VSR300
         slave: 1
-        address: 1130 #0=Man stop,1=Man ???,2=Man Lav,3=Man Normal,4=Man Høy
+        address: 1130 #0: Off(1),2: Low,3: Normal,4: High,(1):value Off only allowed if contents of register REG_FAN_MANUAL_STOP_ALLOWED is 1.
+        input_type: holding
+        count: 1
+        data_type: uint16
+      - name: vsr300_fan_manual_stop_allowed_register
+        #hub: VSR300
+        slave: 1
+        address: 1352
         input_type: holding
         count: 1
         data_type: uint16
@@ -251,7 +258,7 @@ modbus:
         offset: 0
         precision: 1
         data_type: uint16
-      # 0 = supply reg., 1 = Room reg.(requires room temp sensor, therefore NA), 2 = extract reg.
+      # Unit temperature control mode. Requires room temp sensor. 0: Supply,1: Room,2: Extract
       - name: vsr300_supply_air_room_exhaust_reg
         #hub: VSR300
         slave: 1
@@ -571,19 +578,19 @@ sensor:
   - platform: template
     sensors:
       vsr300_supply_air_rf:
-        value_template: "{{((states.sensor.vsr300_supply_air_fan.state | int) * 3) | round(0) }}"
+        value_template: "{{((states('sensor.vsr300_supply_air_fan') | int) * 3) | round(0) }}"
         friendly_name: "Supply air flow rate"
         unit_of_measurement: "m³/t"
   - platform: template
     sensors:
       vsr300_exhaust_air_rf:
-        value_template: "{{((states.sensor.vsr300_extractor_fan.state | int) * 3) | round(0) }}"
+        value_template: "{{((states('sensor.vsr300_extractor_fan') | int) * 3) | round(0)}}"
         friendly_name: "Exhaust air flow rate"
         unit_of_measurement: "m³/t"
   - platform: template
     sensors:
       vsr300_recovery_rate:
-        value_template: "{{((((states.sensor.vsr300_supply_temperature.state | float ) - (states.sensor.vsr300_outdoor_temperature.state | float)) / ((states.sensor.vsr300_exhaust_temperature.state | float ) - (states.sensor.vsr300_outdoor_temperature.state | float))) * 100) | round(1) }}"
+        value_template: "{{((((states('sensor.vsr300_supply_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float)) / ((states('sensor.vsr300_exhaust_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float))) * 100) | round(1) }}"
         unit_of_measurement: "%"
         friendly_name: "Recovery rate"
       vsr300_time_to_filter_change_months:
@@ -754,15 +761,17 @@ sensor:
             Auto schedule - Normal           
           {% elif states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 4 %}
             Auto schedule - High                       
+          {% elif states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 0 %}
+            Auto schedule - Normal
           {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 0 %}
             Manual STOP
           {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 1 %}
             Manual Shitstorm? 
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 2 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 2 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_mode_status_dummy', 'off') %}
             Manual Low 
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 3 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 3 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_mode_status_dummy', 'off') %}
             Manual Normal
-          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 4 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_modus_status_dummy', 'off') %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int == 4 and is_state('input_boolean.vsr300_ppm_mode_auto_enable_mode_status_dummy', 'off') %}
             Manual High                     
           {% elif states('sensor.vsr300_mode_status_register')|int == 3  %}
             Refresh
