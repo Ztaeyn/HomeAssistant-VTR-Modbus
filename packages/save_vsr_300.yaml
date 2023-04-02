@@ -4,8 +4,8 @@
 modbus:
   - name: VSR300
     type: tcp
-    host: 192.168.1.204
-    port: 502
+    host: 192.168.10.22  # User specific setting
+    port: 8432 # User specific setting
     timeout: 3 #Timeout for slave response in seconds (default=3)
     delay: 3 #Time to sleep in seconds after connecting and before sending messages (defualt=0)
 
@@ -791,7 +791,7 @@ sensor:
           {% elif states('sensor.vsr300_mode_status_register')|int == 11 %}
             CDI2
           {% elif states('sensor.vsr300_mode_status_register')|int == 12 %}
-            Cooker hood          
+           Pressure guard         
           {% else %}
             WTF
           {% endif %}
