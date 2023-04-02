@@ -1,0 +1,78 @@
+type: entities
+show_header_toggle: false
+entities:
+  - entity: input_number.vtr300_boost_modus_varighet_sp
+    type: custom:numberbox-card
+    name: BoostModus Setpunkt
+    icon: mdi:timelapse
+    unit: m
+    style: >
+      :host { {% if states('input_number.vtr300_boost_modus_varighet_sp') |
+      float == states('sensor.vtr300_boost_modus_varighet') | float %}
+          --paper-item-icon-color: green;
+          color: green;
+        {% else %}
+          --paper-item-icon-color: red;
+          color: red;
+        {% endif %}
+      }
+  - entity: input_number.vtr300_party_modus_varighet_sp
+    type: custom:numberbox-card
+    name: PartyModus Setpunkt
+    icon: mdi:timelapse
+    unit: t
+    style: >
+      :host { {% if states('input_number.vtr300_party_modus_varighet_sp') |
+      float == states('sensor.vtr300_party_modus_varighet') | float %}
+          --paper-item-icon-color: green;
+          color: green;
+        {% else %}
+          --paper-item-icon-color: red;
+          color: red;
+        {% endif %}
+      }
+  - entity: input_number.vtr300_borte_modus_varighet_sp
+    type: custom:numberbox-card
+    name: BorteModus Setpunkt
+    icon: mdi:timelapse
+    unit: t
+    style: >
+      :host { {% if states('input_number.vtr300_borte_modus_varighet_sp') |
+      float == states('sensor.vtr300_borte_modus_varighet') | float %}
+          --paper-item-icon-color: green;
+          color: green;
+        {% else %}
+          --paper-item-icon-color: red;
+          color: red;
+        {% endif %}
+      }
+  - entity: input_number.vtr300_ferie_modus_varighet_sp
+    type: custom:numberbox-card
+    name: FerieModus Setpunkt
+    icon: mdi:timelapse
+    unit: d
+    style: >
+      :host { {% if states('input_number.vtr300_ferie_modus_varighet_sp') |
+      float == states('sensor.vtr300_ferie_modus_varighet') | float %}
+          --paper-item-icon-color: green;
+          color: green;
+        {% else %}
+          --paper-item-icon-color: red;
+          color: red;
+        {% endif %}
+      }
+  - entity: input_number.vtr300_eco_offset_temp_sp
+    type: custom:numberbox-card
+    name: Eco Offset Setpunkt
+    icon: mdi:timelapse
+    unit: °C
+    style: >
+      :host { {% if states('input_number.vtr300_eco_offset_temp_sp') | float ==
+      states('sensor.vtr300_eco_varme_offset') | float %}
+          --paper-item-icon-color: green;
+          color: green;
+        {% else %}
+          --paper-item-icon-color: red;
+          color: red;
+        {% endif %}
+      }

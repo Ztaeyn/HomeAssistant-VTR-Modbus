@@ -1,0 +1,42 @@
+type: horizontal-stack
+cards:
+  - type: custom:mushroom-entity-card
+    entity: sensor.vtr300_modus_status
+    primary_info: none
+    icon_type: none
+  - type: conditional
+    conditions:
+      - entity: switch.vtr300_borte_modus
+        state: 'on'
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.vtr300_borte_nedtelling_tid_t
+      primary_info: none
+      icon_type: none
+  - type: conditional
+    conditions:
+      - entity: switch.vtr300_party_modus
+        state: 'on'
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.vtr300_party_nedtelling_tid_t
+      primary_info: none
+      icon_type: none
+  - type: conditional
+    conditions:
+      - entity: switch.vtr300_boost_modus
+        state: 'on'
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.vtr300_boost_nedtelling_tid_t
+      primary_info: none
+      icon_type: none
+  - type: conditional
+    conditions:
+      - entity: switch.vtr300_ferie_modus
+        state: 'on'
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.vtr300_ferie_nedtelling_tid_t
+      primary_info: none
+      icon_type: none
