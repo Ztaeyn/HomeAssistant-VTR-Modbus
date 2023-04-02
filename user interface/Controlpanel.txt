@@ -312,7 +312,7 @@ cards:
             icon: mdi:alarm-light
       - type: custom:button-card
         color_type: card
-        entity: sensor.vtr300_filter_alm
+        entity: sensor.vtr300_filter_wrn_cnt_alm
         aspect_ratio: 2/1
         show_name: true
         name: Filter Alarm
