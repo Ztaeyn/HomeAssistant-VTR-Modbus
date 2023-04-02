@@ -5,6 +5,9 @@ Credits to GMTrevis who created the original code for Home Assistant, and then i
 The Node Red version has full control of the VTR, but I had issues where it overloaded my Node-Red. 
 I found his incomplete Home Assistant code, and am working on filling it out for my own experiences.
 
+And a big thanks to cmragnar who branched off and created a package out of this, which I'm now merging in and will continue fixing on that instead.
+* https://github.com/cmragnar/HomeAssistant-VSR300-Modbus
+
 With this you currently can:
 - Change operation Mode
 - Set duration setpoint for Away, Vacation, Boost and Party
