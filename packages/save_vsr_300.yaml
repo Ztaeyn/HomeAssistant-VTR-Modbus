@@ -600,10 +600,10 @@ sensor:
             {%- if days > 548 -%}
               More than 1.5 year
               {%- else -%}
-               {%- if days > 31 -%}
+               {%- if days >= 31 -%}
                 {{ months }} Mnd
               {%- endif -%}           
-              {%- if days < 30 -%}
+              {%- if days <= 30 -%}
                 {{ days }}d
               {%- endif -%}
             {%- endif -%}    
