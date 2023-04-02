@@ -1,0 +1,114 @@
+- id: vtr300SetSetpointAway
+  alias: VTR300 Set Setpoint Away
+  trigger:
+    platform: state
+    entity_id: input_number.vtr300_borte_modus_varighet_sp
+  action:
+  - service: modbus.write_register
+    data_template:
+      hub: VTR300
+      unit: 1
+      address: 1101
+      value: '{{ states.input_number.vtr300_borte_modus_varighet_sp.state | int }}'
+- id: vtr300GetSetpointAway
+  alias: VTR300 Get Setpoint Away
+  trigger:
+    platform: time_pattern
+    seconds: 10
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.vtr300_borte_modus_varighet_sp
+      value: '{{ states.sensor.vtr300_borte_modus_varighet.state | int }}'
+
+- id: vtr300SetSetpointVacation
+  alias: VTR300 Set Setpoint Vacation
+  trigger:
+    platform: state
+    entity_id: input_number.vtr300_ferie_modus_varighet_sp
+  action:
+  - service: modbus.write_register
+    data_template:
+      hub: VTR300
+      unit: 1
+      address: 1100
+      value: '{{ states.input_number.vtr300_ferie_modus_varighet_sp.state | int }}'
+- id: vtr300GetSetpointVacation
+  alias: VTR300 Get Setpoint Vacation
+  trigger:
+    platform: time_pattern
+    seconds: 10
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.vtr300_ferie_modus_varighet_sp
+      value: '{{ states.sensor.vtr300_ferie_modus_varighet.state | int }}'
+
+- id: vtr300SetSetpointEco
+  alias: VTR300 Set Setpoint Eco Mode
+  trigger:
+    platform: state
+    entity_id: input_number.vtr300_eco_offset_temp_sp
+  action:
+  - service: modbus.write_register
+    data_template:
+      hub: VTR300
+      unit: 1
+      address: 2503
+      value: '{{ states.input_number.vtr300_eco_offset_temp_sp.state | int * 10 }}'
+- id: vtr300GetSetpointEco
+  alias: VTR300 Get Setpoint Eco Mode
+  trigger:
+    platform: time_pattern
+    seconds: 10
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.vtr300_eco_offset_temp_sp
+      value: '{{ states.sensor.vtr300_eco_varme_offset.state | int }}'
+
+- id: vtr300SetSetpointBoost
+  alias: VTR300 Set Setpoint Boost Mode
+  trigger:
+    platform: state
+    entity_id: input_number.vtr300_boost_modus_varighet_sp
+  action:
+  - service: modbus.write_register
+    data_template:
+      hub: VTR300
+      unit: 1
+      address: 1103
+      value: '{{ states.input_number.vtr300_boost_modus_varighet_sp.state | int }}'
+- id: vtr300GetSetpointBoost
+  alias: VTR300 Get Setpoint Boost Mode
+  trigger:
+    platform: time_pattern
+    seconds: 10
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.vtr300_boost_modus_varighet_sp
+      value: '{{ states.sensor.vtr300_boost_modus_varighet.state | int }}'
+
+- id: vtr300SetSetpointParty
+  alias: VTR300 Set Setpoint Party Mode
+  trigger:
+    platform: state
+    entity_id: input_number.vtr300_party_modus_varighet_sp
+  action:
+  - service: modbus.write_register
+    data_template:
+      hub: VTR300
+      unit: 1
+      address: 1104
+      value: '{{ states.input_number.vtr300_party_modus_varighet_sp.state | int }}'
+- id: vtr300GetSetpointParty
+  alias: VTR300 Get Setpoint Party Mode
+  trigger:
+    platform: time_pattern
+    seconds: 10
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.vtr300_party_modus_varighet_sp
+      value: '{{ states.sensor.vtr300_party_modus_varighet.state | int }}'
