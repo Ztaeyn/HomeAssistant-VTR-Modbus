@@ -590,6 +590,7 @@ sensor:
         value_template: "{{((((states('sensor.vsr300_supply_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float)) / ((states('sensor.vsr300_exhaust_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float))) * 100) | round(1) }}"
         unit_of_measurement: "%"
         friendly_name: "Recovery rate"
+
       vsr300_time_to_filter_change_months:
         friendly_name: "Next filter change"
         value_template: >-
@@ -600,10 +601,10 @@ sensor:
             {%- if days > 548 -%}
               More than 1.5 year
               {%- else -%}
-               {%- if days => 31 -%}
+              {%- if days >= 31 -%}
                 {{ months }} Mnd
               {%- endif -%}           
-              {%- if days =< 30 -%}
+              {%- if days <= 30 -%}
                 {{ days }}d
               {%- endif -%}
             {%- endif -%}    
