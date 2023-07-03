@@ -1,15 +1,6 @@
 
 #------------------- INCLUDE----------------------------------|
-group: !include groups.yaml
-light: !include lights.yaml
-modbus: !include modbus.yaml
-
-#customize: !include_dir_merge_named customize/
-automation: !include_dir_merge_list automations/
-switch: !include_dir_merge_list switches/
-script: !include_dir_merge_named scripts/
-sensor: !include_dir_merge_list sensors/
-input_number: !include_dir_merge_named input_number/
-input_boolean: !include_dir_merge_named input_boolean/
+homeassistant:
+  packages: !include_dir_named packages
 
 
