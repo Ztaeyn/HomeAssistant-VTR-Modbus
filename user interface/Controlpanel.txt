@@ -5,43 +5,43 @@ cards:
   - type: horizontal-stack
     cards:
       - type: custom:mushroom-entity-card
-        entity: sensor.vtr300_modus_status
+        entity: sensor.vsr300_mode_status
         primary_info: none
         icon_type: none
       - type: conditional
         conditions:
-          - entity: switch.vtr300_borte_modus
+          - entity: switch.vsr300_away_mode
             state: 'on'
         card:
           type: custom:mushroom-entity-card
-          entity: sensor.vtr300_borte_nedtelling_tid_t
+          entity: sensor.vsr300_away_countdown_time_t
           primary_info: none
           icon_type: none
       - type: conditional
         conditions:
-          - entity: switch.vtr300_party_modus
+          - entity: switch.vsr300_crowded_mode
             state: 'on'
         card:
           type: custom:mushroom-entity-card
-          entity: sensor.vtr300_party_nedtelling_tid_t
+          entity: sensor.vsr300_crowded_countdown_time_t
           primary_info: none
           icon_type: none
       - type: conditional
         conditions:
-          - entity: switch.vtr300_boost_modus
+          - entity: switch.vsr300_refresh_mode
             state: 'on'
         card:
           type: custom:mushroom-entity-card
-          entity: sensor.vtr300_boost_nedtelling_tid_t
+          entity: sensor.vsr300_refresh_countdown_time_t
           primary_info: none
           icon_type: none
       - type: conditional
         conditions:
-          - entity: switch.vtr300_ferie_modus
+          - entity: switch.vsr300_holiday_mode
             state: 'on'
         card:
           type: custom:mushroom-entity-card
-          entity: sensor.vtr300_ferie_nedtelling_tid_t
+          entity: sensor.vsr300_holiday_countdown_time_t
           primary_info: none
           icon_type: none
   - square: false
@@ -49,7 +49,7 @@ cards:
     type: grid
     cards:
       - type: custom:button-card
-        entity: switch.vtr300_auto_modus
+        entity: switch.vsr300_auto_mode
         icon: mdi:fan-auto
         aspect_ratio: 1/1
         show_state: false
@@ -62,7 +62,7 @@ cards:
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: switch.vtr300_man_lav_modus
+        entity: switch.vsr300_man_low_mode
         icon: mdi:fan-speed-1
         aspect_ratio: 1/1
         show_state: false
@@ -72,11 +72,11 @@ cards:
             - color: |
                 [[[
                   if (entity.state == 'on' ) return 'orange' 
-                  if (states["sensor.vtr300_manuell_modus_kommando_register"].state == 2) return 'orange'
+                  if (states["sensor.vsr300_manual_mode_command_register"].state == 2) return 'orange'
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: switch.vtr300_man_normal_modus
+        entity: switch.vsr300_man_normal_mode
         icon: mdi:fan-speed-2
         aspect_ratio: 1/1
         show_state: false
@@ -86,11 +86,11 @@ cards:
             - color: |
                 [[[
                   if (entity.state == 'on' ) return 'orange' 
-                  if (states["sensor.vtr300_manuell_modus_kommando_register"].state == 3) return 'orange'
+                  if (states["sensor.vsr300_manual_mode_command_register"].state == 3) return 'orange'
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: switch.vtr300_man_hoy_modus
+        entity: switch.vsr300_man_high_mode
         icon: mdi:fan-speed-3
         aspect_ratio: 1/1
         show_state: false
@@ -100,11 +100,11 @@ cards:
             - color: |
                 [[[
                   if (entity.state == 'on' ) return 'orange' 
-                  if (states["sensor.vtr300_manuell_modus_kommando_register"].state == 4) return 'orange'
+                  if (states["sensor.vsr300_manual_mode_command_register"].state == 4) return 'orange'
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: switch.vtr300_party_modus
+        entity: switch.vsr300_crowded_mode
         icon: mdi:fan-chevron-up
         aspect_ratio: 1/1
         show_state: false
@@ -117,7 +117,7 @@ cards:
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: switch.vtr300_boost_modus
+        entity: switch.vsr300_refresh_mode
         icon: mdi:fan-plus
         aspect_ratio: 1/1
         show_state: false
@@ -130,7 +130,7 @@ cards:
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: switch.vtr300_borte_modus
+        entity: switch.vsr300_away_mode
         icon: mdi:fan-minus
         aspect_ratio: 1/1
         show_state: false
@@ -143,7 +143,7 @@ cards:
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: switch.vtr300_ferie_modus
+        entity: switch.vsr300_holiday_mode
         icon: mdi:fan-remove
         aspect_ratio: 1/1
         show_state: false
@@ -156,7 +156,7 @@ cards:
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: switch.vtr300_man_stopp_modus
+        entity: switch.vsr300_man_stop_mode
         icon: mdi:fan-off
         aspect_ratio: 1/1
         show_state: false
@@ -169,7 +169,7 @@ cards:
                   else return '#50729c';
                 ]]]
       - type: custom:button-card
-        entity: sensor.vtr300_modus_status
+        entity: sensor.vsr300_mode_status
         icon: mdi:car-brake-low-pressure
         aspect_ratio: 1/1
         show_state: false
@@ -179,20 +179,20 @@ cards:
           icon:
             - color: |
                 [[[
-                  if (entity.state == 'Trykkvakt' ) return 'orange' 
+                  if (entity.state == 'Pressure guard' ) return 'orange' 
                   else return '#50729c';
                 ]]]
   - type: entities
     show_header_toggle: false
     entities:
-      - entity: input_number.vtr300_boost_modus_varighet_sp
+      - entity: input_number.vsr300_refresh_mode_duration_sp
         type: custom:numberbox-card
         name: BoostModus Setpunkt
         icon: mdi:timelapse
         unit: m
         style: >
-          :host { {% if states('input_number.vtr300_boost_modus_varighet_sp') |
-          float == states('sensor.vtr300_boost_modus_varighet') | float %}
+          :host { {% if states('input_number.vsr300_refresh_mode_duration_sp') |
+          float == states('sensor.vsr300_refresh_mode_duration') | float %}
               --paper-item-icon-color: green;
               color: green;
             {% else %}
@@ -200,14 +200,14 @@ cards:
               color: red;
             {% endif %}
           }
-      - entity: input_number.vtr300_party_modus_varighet_sp
+      - entity: input_number.vsr300_crowded_mode_duration_sp
         type: custom:numberbox-card
         name: PartyModus Setpunkt
         icon: mdi:timelapse
         unit: t
         style: >
-          :host { {% if states('input_number.vtr300_party_modus_varighet_sp') |
-          float == states('sensor.vtr300_party_modus_varighet') | float %}
+          :host { {% if states('input_number.vsr300_crowded_mode_duration_sp') |
+          float == states('sensor.vsr300_crowded_mode_duration') | float %}
               --paper-item-icon-color: green;
               color: green;
             {% else %}
@@ -215,14 +215,14 @@ cards:
               color: red;
             {% endif %}
           }
-      - entity: input_number.vtr300_borte_modus_varighet_sp
+      - entity: input_number.vsr300_away_mode_duration_sp
         type: custom:numberbox-card
         name: BorteModus Setpunkt
         icon: mdi:timelapse
         unit: t
         style: >
-          :host { {% if states('input_number.vtr300_borte_modus_varighet_sp') |
-          float == states('sensor.vtr300_borte_modus_varighet') | float %}
+          :host { {% if states('input_number.vsr300_away_mode_duration_sp') |
+          float == states('sensor.vsr300_away_mode_duration') | float %}
               --paper-item-icon-color: green;
               color: green;
             {% else %}
@@ -230,14 +230,14 @@ cards:
               color: red;
             {% endif %}
           }
-      - entity: input_number.vtr300_ferie_modus_varighet_sp
+      - entity: input_number.vsr300_holiday_mode_duration_sp
         type: custom:numberbox-card
         name: FerieModus Setpunkt
         icon: mdi:timelapse
         unit: d
         style: >
-          :host { {% if states('input_number.vtr300_ferie_modus_varighet_sp') |
-          float == states('sensor.vtr300_ferie_modus_varighet') | float %}
+          :host { {% if states('input_number.vsr300_holiday_mode_duration_sp') |
+          float == states('sensor.vsr300_holiday_mode_duration') | float %}
               --paper-item-icon-color: green;
               color: green;
             {% else %}
@@ -245,14 +245,14 @@ cards:
               color: red;
             {% endif %}
           }
-      - entity: input_number.vtr300_eco_offset_temp_sp
+      - entity: input_number.vsr300_eco_offset_temp_sp
         type: custom:numberbox-card
         name: Eco Offset Setpunkt
         icon: mdi:timelapse
         unit: °C
         style: >
-          :host { {% if states('input_number.vtr300_eco_offset_temp_sp') | float
-          == states('sensor.vtr300_eco_varme_offset') | float %}
+          :host { {% if states('input_number.vsr300_eco_offset_temp_sp') | float
+          == states('sensor.vsr300_eco_heat_offset') | float %}
               --paper-item-icon-color: green;
               color: green;
             {% else %}
@@ -264,7 +264,7 @@ cards:
     cards:
       - type: custom:button-card
         color_type: card
-        entity: sensor.vtr300_a_alm
+        entity: sensor.vsr300_a_alarm
         aspect_ratio: 2/1
         show_name: true
         name: A# Alarm
@@ -280,7 +280,7 @@ cards:
             icon: mdi:alarm-light
       - type: custom:button-card
         color_type: card
-        entity: sensor.vtr300_b_alm
+        entity: sensor.vsr300_b_alarm
         aspect_ratio: 2/1
         show_name: true
         name: B# Alarm
@@ -296,7 +296,7 @@ cards:
             icon: mdi:alarm-light
       - type: custom:button-card
         color_type: card
-        entity: sensor.vtr300_c_alm
+        entity: sensor.vsr300_c_alarm
         aspect_ratio: 2/1
         show_name: true
         name: C# Alarm
@@ -312,7 +312,7 @@ cards:
             icon: mdi:alarm-light
       - type: custom:button-card
         color_type: card
-        entity: sensor.vtr300_filter_wrn_cnt_alm
+        entity: sensor.vsr300_filter_warning_alarm
         aspect_ratio: 2/1
         show_name: true
         name: Filter Alarm
