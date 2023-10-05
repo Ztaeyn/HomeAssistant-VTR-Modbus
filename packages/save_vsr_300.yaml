@@ -29,7 +29,6 @@ modbus:
         address: 12101
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -41,7 +40,6 @@ modbus:
         address: 12102
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -53,7 +51,6 @@ modbus:
         address: 12543 #2050   #NB!EAT/RAT used for extract air controller
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -65,7 +62,6 @@ modbus:
         address: 12107
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -77,7 +73,6 @@ modbus:
         address: 12108
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -89,7 +84,6 @@ modbus:
         address: 12135
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: uint16
       - name: vsr300_calculated_moisture_extraction
         #hub: VSR300
@@ -98,7 +92,6 @@ modbus:
         address: 2210
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: uint16
       - name: vsr300_calculated_moisture_intake
         #hub: VSR300
@@ -107,7 +100,6 @@ modbus:
         address: 2211
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: uint16
       - name: vsr300_supply_air_fan
         #hub: VSR300
@@ -116,7 +108,6 @@ modbus:
         address: 14000
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: uint16
       - name: vsr300_extractor_fan
         #hub: VSR300
@@ -125,21 +116,18 @@ modbus:
         address: 14001
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: uint16
       - name: vsr300_summer_winter_operation #Actual seasson for Demand Control: 0: Summer,1: Winter
         #hub: VSR300
         slave: 1
         address: 1038
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_extractor_hood_pressure_switch_off_on
         #hub: VSR300
         slave: 1
         address: 12020
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_TRIAC_after_manual_override #PWM TRIAC after manual override
         #hub: VSR300
@@ -148,14 +136,12 @@ modbus:
         address: 2148
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: uint16
       - name: vsr300_TRIAC_control_signal_on_off #TRIAC Control signal
         #hub: VSR300
         slave: 1
         address: 14380
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_heat_recovery
         #hub: VSR300
@@ -164,14 +150,12 @@ modbus:
         address: 14102
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: uint16
       - name: vsr300_filter_replacement_alarm
         #hub: VSR300
         slave: 1
         address: 7006
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_filter_replacement_period_months
         #hub: VSR300
@@ -179,7 +163,6 @@ modbus:
         address: 7000
         input_type: holding
         unit_of_measurement: "md"
-        count: 1
         data_type: int16
       - name: vsr300_time_to_filter_replacement_s
         #hub: VSR300
@@ -187,28 +170,24 @@ modbus:
         address: 7005
         input_type: holding
         unit_of_measurement: "s"
-        count: 2
         data_type: uint32
       - name: vsr300_mode_status_register
         #hub: VSR300
         slave: 1
         address: 1160 #Active User mode.0: Auto,1: Manual,2: Crowded,3: Refresh,4: Fireplace,5: Away,6: Holiday,7: Cooker Hood,8: Vacuum Cleaner,9: CDI1,10: CDI2,11: CDI3,12: PressureGuard
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_manual_mode_command_register
         #hub: VSR300
         slave: 1
         address: 1130 #0: Off(1),2: Low,3: Normal,4: High,(1):value Off only allowed if contents of register REG_FAN_MANUAL_STOP_ALLOWED is 1.
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_fan_manual_stop_allowed_register
         #hub: VSR300
         slave: 1
         address: 1352
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_supply_air_sp
         #hub: VSR300
@@ -217,7 +196,6 @@ modbus:
         address: 2000
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -229,7 +207,6 @@ modbus:
         address: 2012
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -241,7 +218,6 @@ modbus:
         address: 2020
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -253,7 +229,6 @@ modbus:
         address: 2021
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -264,7 +239,6 @@ modbus:
         slave: 1
         address: 2030
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_eco_heat_offset
         #hub: VSR300
@@ -273,7 +247,6 @@ modbus:
         address: 2503 #Temperature offset for heating during Eco mode
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -284,7 +257,6 @@ modbus:
         address: 1110
         input_type: holding
         unit_of_measurement: s
-        count: 1
         data_type: uint16
       - name: vsr300_holiday_mode_duration
         #hub: VSR300
@@ -292,7 +264,6 @@ modbus:
         address: 1100
         input_type: holding
         unit_of_measurement: d
-        count: 1
         data_type: uint16
       - name: vsr300_away_mode_duration
         #hub: VSR300
@@ -300,7 +271,6 @@ modbus:
         address: 1101
         input_type: holding
         unit_of_measurement: t
-        count: 1
         data_type: uint16
       - name: vsr300_fireplace_mode_duration
         #hub: VSR300
@@ -308,7 +278,6 @@ modbus:
         address: 1102
         input_type: holding
         unit_of_measurement: min
-        count: 1
         data_type: uint16
       - name: vsr300_refresh_mode_duration
         #hub: VSR300
@@ -316,7 +285,6 @@ modbus:
         address: 1103
         input_type: holding
         unit_of_measurement: min
-        count: 1
         data_type: uint16
       - name: vsr300_Crowded_mode_duration
         #hub: VSR300
@@ -324,7 +292,6 @@ modbus:
         address: 1104
         input_type: holding
         unit_of_measurement: t
-        count: 1
         data_type: uint16
       - name: vsr300_moisture_extraction_sp
         #hub: VSR300
@@ -333,7 +300,6 @@ modbus:
         address: 2202
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: uint16
       - name: vsr300_fan_speed_comp_read
         #hub: VSR300
@@ -342,7 +308,6 @@ modbus:
         address: 1254
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: int16
       - name: vsr300_fan_speed_comp_winter
         #hub: VSR300
@@ -351,7 +316,6 @@ modbus:
         address: 1251
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: int16
       - name: vsr300_fan_speed_comp_winter_start_temp
         #hub: VSR300
@@ -360,7 +324,6 @@ modbus:
         address: 1255
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -372,7 +335,6 @@ modbus:
         address: 1253
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -384,7 +346,6 @@ modbus:
         address: 1252
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -396,7 +357,6 @@ modbus:
         address: 1258
         input_type: holding
         unit_of_measurement: "%"
-        count: 1
         data_type: int16
       - name: vsr300_fan_speed_comp_summer_start_temp
         #hub: VSR300
@@ -405,7 +365,6 @@ modbus:
         address: 1256
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -417,7 +376,6 @@ modbus:
         address: 1257
         input_type: holding
         unit_of_measurement: °C
-        count: 1
         scale: 0.1
         offset: 0
         precision: 1
@@ -427,49 +385,42 @@ modbus:
         slave: 1
         address: 15900
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_b_alarm
         #hub: VSR300
         slave: 1
         address: 15901
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_c_alarm
         #hub: VSR300
         slave: 1
         address: 15902
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_filter_warning_alarm
         #hub: VSR300
         slave: 1
         address: 15543
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_filter_alarm
         #hub: VSR300
         slave: 1
         address: 15141
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_supply_air_temp_low_alarm
         #hub: VSR300
         slave: 1
         address: 15176
         input_type: holding
-        count: 1
         data_type: uint16
       - name: vsr300_filter_warning_alarm_delay_counter
         #hub: VSR300
         slave: 1
         address: 15548
         input_type: holding
-        count: 1
         data_type: uint16
 
 ################################################################################
