@@ -59,7 +59,7 @@ modbus:
         #hub: VSR300
         device_class: temperature
         slave: 1
-        address: 12107
+        address: 12106
         input_type: holding
         unit_of_measurement: °C
         scale: 0.1
@@ -70,7 +70,7 @@ modbus:
         #hub: VSR300
         device_class: temperature
         slave: 1
-        address: 12108
+        address: 12107
         input_type: holding
         unit_of_measurement: °C
         scale: 0.1
@@ -733,15 +733,15 @@ sensor:
           {% elif states('sensor.vsr300_mode_status_register')|int == 6  %}
             Holiday
           {% elif states('sensor.vsr300_mode_status_register')|int == 7 %}
-            Cooker
+            Cooker Hood
           {% elif states('sensor.vsr300_mode_status_register')|int == 8 %}
-            Hood
-          {% elif states('sensor.vsr300_mode_status_register')|int == 9 %}
             Vacuum cleaner
-          {% elif states('sensor.vsr300_mode_status_register')|int == 10 %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 9 %}
             CDI1
-          {% elif states('sensor.vsr300_mode_status_register')|int == 11 %}
+          {% elif states('sensor.vsr300_mode_status_register')|int == 10 %}
             CDI2
+          {% elif states('sensor.vsr300_mode_status_register')|int == 11 %}
+            CDI3
           {% elif states('sensor.vsr300_mode_status_register')|int == 12 %}
            Pressure guard         
           {% else %}
