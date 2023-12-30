@@ -3,9 +3,9 @@
 ################################################################################
 modbus:
   - name: VSR300
-    type: tcp
-    host: 192.168.10.22  # User specific setting
-    port: 8432 # User specific setting
+    type: rtuovertcp
+    host: 192.168.88.15
+    port: 502
     timeout: 3 #Timeout for slave response in seconds (default=3)
     delay: 3 #Time to sleep in seconds after connecting and before sending messages (defualt=0)
 
@@ -162,7 +162,7 @@ modbus:
         slave: 1
         address: 7000
         input_type: holding
-        unit_of_measurement: "md"
+        unit_of_measurement: "months"
         data_type: int16
       - name: vsr300_time_to_filter_replacement_s
         #hub: VSR300
@@ -263,14 +263,14 @@ modbus:
         slave: 1
         address: 1100
         input_type: holding
-        unit_of_measurement: d
+        unit_of_measurement: days
         data_type: uint16
       - name: vsr300_away_mode_duration
         #hub: VSR300
         slave: 1
         address: 1101
         input_type: holding
-        unit_of_measurement: t
+        unit_of_measurement: h
         data_type: uint16
       - name: vsr300_fireplace_mode_duration
         #hub: VSR300
@@ -291,7 +291,7 @@ modbus:
         slave: 1
         address: 1104
         input_type: holding
-        unit_of_measurement: t
+        unit_of_measurement: h
         data_type: uint16
       - name: vsr300_moisture_extraction_sp
         #hub: VSR300
@@ -478,8 +478,8 @@ input_number:
     min: 1
     max: 365
     step: 1
-    mode: slider
-    unit_of_measurement: d
+    mode: box
+    unit_of_measurement: days
     icon: mdi:timelapse
 
   vsr300_away_mode_duration_sp:
@@ -488,7 +488,7 @@ input_number:
     max: 72
     step: 1
     mode: slider
-    unit_of_measurement: t
+    unit_of_measurement: h
     icon: mdi:timelapse
 
   vsr300_refresh_mode_duration_sp:
@@ -497,7 +497,7 @@ input_number:
     max: 240
     step: 1
     mode: slider
-    unit_of_measurement: m
+    unit_of_measurement: min
     icon: mdi:timelapse
 
   vsr300_crowded_mode_duration_sp:
@@ -506,7 +506,7 @@ input_number:
     max: 8
     step: 1
     mode: slider
-    unit_of_measurement: t
+    unit_of_measurement: h
     icon: mdi:timelapse
 
   vsr300_fireplace_mode_duration_sp:
@@ -515,7 +515,7 @@ input_number:
     max: 60
     step: 1
     mode: slider
-    unit_of_measurement: m
+    unit_of_measurement: min
     icon: mdi:timelapse
 
 ################################################################################
@@ -528,13 +528,13 @@ sensor:
       vsr300_supply_air_rf:
         value_template: "{{((states('sensor.vsr300_supply_air_fan') | int) * 3) | round(0) }}"
         friendly_name: "Supply air flow rate"
-        unit_of_measurement: "m³/t"
+        unit_of_measurement: "m³/h"
   - platform: template
     sensors:
       vsr300_exhaust_air_rf:
         value_template: "{{((states('sensor.vsr300_extractor_fan') | int) * 3) | round(0)}}"
         friendly_name: "Exhaust air flow rate"
-        unit_of_measurement: "m³/t"
+        unit_of_measurement: "m³/h"
   - platform: template
     sensors:
       vsr300_recovery_rate:
@@ -553,10 +553,10 @@ sensor:
               More than 1.5 year
               {%- else -%}
               {%- if days >= 31 -%}
-                {{ months }} Mnd
+                {{ months }} months
               {%- endif -%}           
               {%- if days <= 30 -%}
-                {{ days }}d
+                {{ days }} days
               {%- endif -%}
             {%- endif -%}    
           {% else %}
@@ -575,13 +575,13 @@ sensor:
               Less than 1 minute
               {%- else -%}
               {%- if hours > 0 -%}
-                  {{ hours }}t
+                  {{ hours }} h
                 {%- endif -%}
               {%- if minutes > 0 -%}
                 {%- if hours > 0 -%}
                   {{ ' ' }}
                 {%- endif -%}
-                {{ minutes }}m
+                {{ minutes }} min
               {%- endif -%}
             {%- endif -%}
           {% else %}
@@ -600,13 +600,13 @@ sensor:
               Less than 1 minute
               {%- else -%}
               {%- if hours > 0 -%}
-                  {{ hours }}t
+                  {{ hours }} h
                 {%- endif -%}
               {%- if minutes > 0 -%}
                 {%- if hours > 0 -%}
                   {{ ' ' }}
                 {%- endif -%}
-                {{ minutes }}m
+                {{ minutes }} min
               {%- endif -%}
             {%- endif -%}
           {% else %}
@@ -625,13 +625,13 @@ sensor:
               Less than 1 minute
               {%- else -%}
               {%- if hours > 0 -%}
-                  {{ hours }}t
+                  {{ hours }} h
                 {%- endif -%}
               {%- if minutes > 0 -%}
                 {%- if hours > 0 -%}
                   {{ ' ' }}
                 {%- endif -%}
-                {{ minutes }}m
+                {{ minutes }} min
               {%- endif -%}
             {%- endif -%}
           {% else %}
@@ -650,13 +650,13 @@ sensor:
               Less than 1 minute
               {%- else -%}
               {%- if hours > 0 -%}
-                  {{ hours }}t
+                  {{ hours }} h
                 {%- endif -%}
               {%- if minutes > 0 -%}
                 {%- if hours > 0 -%}
                   {{ ' ' }}
                 {%- endif -%}
-                {{ minutes }}m
+                {{ minutes }} min
               {%- endif -%}
             {%- endif -%}
           {% else %}
@@ -671,7 +671,7 @@ sensor:
 
             {% set days = (time / 86400) | int %}
               {%- if days > 0 -%}
-                {{ days }}d
+                {{ days }} days
               {%- endif -%}
            {% else %}
             Inactive
@@ -681,11 +681,11 @@ sensor:
         friendly_name: "Active season"
         value_template: >-
           {% if states('sensor.vsr300_summer_winter_operation')|int == 0 %}
-            Sommerdrift
+            Summer
           {% elif states('sensor.vsr300_summer_winter_operation')|int == 1 %}
-            Vinterdrift
+            Winter
           {% else %}
-              Stein dau
+              Stone dead
           {% endif %}
 
       vsr300_regulation_mode:
@@ -694,9 +694,9 @@ sensor:
           {% if states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 0 %}
             Supply air regulation
           {% elif states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 1 %}
-            Rom reg.
+            Room regulation
           {% elif states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 2 %}
-            Exhaust regulation
+            Extract regulation
           {% else %}
             Stone dead
           {% endif %}
