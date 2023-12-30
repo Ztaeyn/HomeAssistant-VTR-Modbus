@@ -7,10 +7,11 @@ modbus:
     host: 192.168.88.15
     port: 502
     timeout: 3 #Timeout for slave response in seconds (default=3)
-    delay: 3 #Time to sleep in seconds after connecting and before sending messages (defualt=0)
+    delay: 1 #Time to sleep in seconds after connecting and before sending messages (defualt=0)
 
     climates:
       - name: vent_VSR300
+        unique_id: vent_VSR300
         address: 12102
         slave: 1
         scale: 0.1
@@ -22,7 +23,9 @@ modbus:
         target_temp_register: 2000
 
     sensors:
+# All addresses are a number lower than value in MODBUS variable list
       - name: vsr300_outdoor_temperature
+        unique_id: vsr300_outdoor_temperature
         ##hub: VSR300
         device_class: temperature
         slave: 1
@@ -34,6 +37,7 @@ modbus:
         precision: 1
         data_type: int16
       - name: vsr300_supply_temperature
+        unique_id: vsr300_supply_temperature
         ##hub: VSR300
         device_class: temperature
         slave: 1
@@ -45,6 +49,7 @@ modbus:
         precision: 1
         data_type: int16
       - name: vsr300_exhaust_temperature
+        unique_id: vsr300_exhaust_temperature
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -56,6 +61,7 @@ modbus:
         precision: 1
         data_type: uint16
       - name: vsr300_efficiency_temperature
+        unique_id: vsr300_efficiency_temperature
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -66,7 +72,8 @@ modbus:
         offset: 0
         precision: 1
         data_type: uint16
-      - name: vsr300_overhetingstemperatur_tilluft
+      - name: vsr300_overheat_temperature
+        unique_id: vsr300_overheat_temperature
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -78,6 +85,7 @@ modbus:
         precision: 1
         data_type: uint16
       - name: vsr300_relative_moisture_extraction
+        unique_id: vsr300_relative_moisture_extraction
         #hub: VSR300
         device_class: humidity
         slave: 1
@@ -86,6 +94,7 @@ modbus:
         unit_of_measurement: "%"
         data_type: uint16
       - name: vsr300_calculated_moisture_extraction
+        unique_id: vsr300_calculated_moisture_extraction
         #hub: VSR300
         device_class: humidity
         slave: 1
@@ -94,6 +103,7 @@ modbus:
         unit_of_measurement: "%"
         data_type: uint16
       - name: vsr300_calculated_moisture_intake
+        unique_id: vsr300_calculated_moisture_intake
         #hub: VSR300
         device_class: humidity
         slave: 1
@@ -102,6 +112,7 @@ modbus:
         unit_of_measurement: "%"
         data_type: uint16
       - name: vsr300_supply_air_fan
+        unique_id: vsr300_supply_air_fan_pwr_fact
         #hub: VSR300
         device_class: power_factor
         slave: 1
@@ -110,6 +121,7 @@ modbus:
         unit_of_measurement: "%"
         data_type: uint16
       - name: vsr300_extractor_fan
+        unique_id: vsr300_extractor_fan_pwr_fact
         #hub: VSR300
         device_class: power_factor
         slave: 1
@@ -118,18 +130,21 @@ modbus:
         unit_of_measurement: "%"
         data_type: uint16
       - name: vsr300_summer_winter_operation #Actual seasson for Demand Control: 0: Summer,1: Winter
+        unique_id: vsr300_summer_winter_operation_1_0
         #hub: VSR300
         slave: 1
         address: 1038
         input_type: holding
         data_type: uint16
       - name: vsr300_extractor_hood_pressure_switch_off_on
+        unique_id: vsr300_digital_ui_1
         #hub: VSR300
         slave: 1
         address: 12020
         input_type: holding
         data_type: uint16
       - name: vsr300_TRIAC_after_manual_override #PWM TRIAC after manual override
+        unique_id: vsr300_triac_after_manual_override
         #hub: VSR300
         device_class: power_factor
         slave: 1
@@ -138,12 +153,14 @@ modbus:
         unit_of_measurement: "%"
         data_type: uint16
       - name: vsr300_TRIAC_control_signal_on_off #TRIAC Control signal
+        unique_id: vsr300_triac_control_signal
         #hub: VSR300
         slave: 1
         address: 14380
         input_type: holding
         data_type: uint16
       - name: vsr300_heat_recovery
+        unique_id: vsr300_heat_recovery
         #hub: VSR300
         device_class: power_factor
         slave: 1
@@ -152,12 +169,14 @@ modbus:
         unit_of_measurement: "%"
         data_type: uint16
       - name: vsr300_filter_replacement_alarm
+        unique_id: vsr300_filter_replacement_alarm
         #hub: VSR300
         slave: 1
         address: 7006
         input_type: holding
         data_type: uint16
       - name: vsr300_filter_replacement_period_months
+        unique_id: vsr300_filter_replacement_period
         #hub: VSR300
         slave: 1
         address: 7000
@@ -165,6 +184,7 @@ modbus:
         unit_of_measurement: "months"
         data_type: int16
       - name: vsr300_time_to_filter_replacement_s
+        unique_id: vsr300_time_to_filter_replacement
         #hub: VSR300
         slave: 1
         address: 7005
@@ -172,24 +192,188 @@ modbus:
         unit_of_measurement: "s"
         data_type: uint32
       - name: vsr300_mode_status_register
+        unique_id: vsr300_mode_status_register
         #hub: VSR300
         slave: 1
         address: 1160 #Active User mode.0: Auto,1: Manual,2: Crowded,3: Refresh,4: Fireplace,5: Away,6: Holiday,7: Cooker Hood,8: Vacuum Cleaner,9: CDI1,10: CDI2,11: CDI3,12: PressureGuard
         input_type: holding
         data_type: uint16
       - name: vsr300_manual_mode_command_register
+        unique_id: vsr300_manual_mode_command_register
         #hub: VSR300
         slave: 1
         address: 1130 #0: Off(1),2: Low,3: Normal,4: High,(1):value Off only allowed if contents of register REG_FAN_MANUAL_STOP_ALLOWED is 1.
         input_type: holding
         data_type: uint16
+      - name: vsr300_supply_air_fan_speed
+        unique_id: vsr300_saf_speed_rpm
+        #hub: VSR300
+        slave: 1
+        address: 12400
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed
+        unique_id: vsr300_eaf_speed_rpm
+        #hub: VSR300
+        slave: 1
+        address: 12401
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_mode_holiday
+        unique_id: vsr300_saf_speed_holiday
+        #hub: VSR300
+        slave: 1
+        address: 1220
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_mode_holiday
+        unique_id: vsr300_eaf_speed_holiday
+        #hub: VSR300
+        slave: 1
+        address: 1221
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_mode_cooker_hood
+        unique_id: vsr300_saf_speed_cooker_hood
+        #hub: VSR300
+        slave: 1
+        address: 1222
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_mode_cooker_hood
+        unique_id: vsr300_eaf_speed_cooker_hood
+        #hub: VSR300
+        slave: 1
+        address: 1223
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_mode_vacuumcleaner
+        unique_id: vsr300_saf_speed_vacuumcleaner
+        #hub: VSR300
+        slave: 1
+        address: 1224
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_mode_vacuumcleaner
+        unique_id: vsr300_eaf_speed_vacuumcleaner
+        #hub: VSR300
+        slave: 1
+        address: 1225
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_low
+        unique_id: vsr300_saf_speed_low
+        #hub: VSR300
+        slave: 1
+        address: 1412
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_low
+        unique_id: vsr300_eaf_speed_low
+        #hub: VSR300
+        slave: 1
+        address: 1413
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_minimum
+        unique_id: vsr300_saf_speed_minimum
+        #hub: VSR300
+        slave: 1
+        address: 1410
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_minimum
+        unique_id: vsr300_eaf_speed_minimum
+        #hub: VSR300
+        slave: 1
+        address: 1411
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_low
+        unique_id: vsr300_saf_speed_low
+        #hub: VSR300
+        slave: 1
+        address: 1302
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_low
+        unique_id: vsr300_eaf_speed_low
+        #hub: VSR300
+        slave: 1
+        address: 1303
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_normal
+        unique_id: vsr300_saf_speed_normal
+        #hub: VSR300
+        slave: 1
+        address: 1414
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_normal
+        unique_id: vsr300_eaf_speed_normal
+        #hub: VSR300
+        slave: 1
+        address: 1415
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_high
+        unique_id: vsr300_saf_speed_high
+        #hub: VSR300
+        slave: 1
+        address: 1416
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_high
+        unique_id: vsr300_eaf_speed_high
+        #hub: VSR300
+        slave: 1
+        address: 1417
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_supply_air_fan_speed_maximum
+        unique_id: vsr300_saf_speed_maximum
+        #hub: VSR300
+        slave: 1
+        address: 1418
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
+      - name: vsr300_exhaust_air_fan_speed_maximum
+        unique_id: vsr300_eaf_speed_maximum
+        #hub: VSR300
+        slave: 1
+        address: 1419
+        input_type: holding
+        unit_of_measurement: rpm
+        data_type: uint16
       - name: vsr300_fan_manual_stop_allowed_register
+        unique_id: vsr300_fan_manual_stop_allowed_reg
         #hub: VSR300
         slave: 1
         address: 1352
         input_type: holding
         data_type: uint16
       - name: vsr300_supply_air_sp
+        unique_id: vsr300_supply_air_sp
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -201,6 +385,7 @@ modbus:
         precision: 1
         data_type: uint16
       - name: vsr300_exhaust_air_sp
+        unique_id: vsr300_exhaust_air_sp
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -212,6 +397,7 @@ modbus:
         precision: 1
         data_type: uint16
       - name: vsr300_exhaust_air_min_sp
+        unique_id: vsr300_exhaust_air_min_sp
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -223,6 +409,7 @@ modbus:
         precision: 1
         data_type: uint16
       - name: vsr300_exhaust_air_max_sp
+        unique_id: vsr300_exhaust_air_max_sp
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -235,12 +422,14 @@ modbus:
         data_type: uint16
       # Unit temperature control mode. Requires room temp sensor. 0: Supply,1: Room,2: Extract
       - name: vsr300_supply_air_room_exhaust_reg
+        unique_id: vsr300_supply_air_room_exhaust_reg
         #hub: VSR300
         slave: 1
         address: 2030
         input_type: holding
         data_type: uint16
       - name: vsr300_eco_heat_offset
+        unique_id: vsr300_eco_heat_offset
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -252,6 +441,7 @@ modbus:
         precision: 1
         data_type: uint16
       - name: vsr300_countdown_mode_time_s
+        unique_id: vsr300_countdown_mode_time
         #hub: VSR300
         slave: 1
         address: 1110
@@ -259,6 +449,7 @@ modbus:
         unit_of_measurement: s
         data_type: uint16
       - name: vsr300_holiday_mode_duration
+        unique_id: vsr300_holiday_mode_duration
         #hub: VSR300
         slave: 1
         address: 1100
@@ -266,6 +457,7 @@ modbus:
         unit_of_measurement: days
         data_type: uint16
       - name: vsr300_away_mode_duration
+        unique_id: vsr300_away_mode_duration
         #hub: VSR300
         slave: 1
         address: 1101
@@ -273,6 +465,7 @@ modbus:
         unit_of_measurement: h
         data_type: uint16
       - name: vsr300_fireplace_mode_duration
+        unique_id: vsr300_fireplace_mode_duration
         #hub: VSR300
         slave: 1
         address: 1102
@@ -280,13 +473,15 @@ modbus:
         unit_of_measurement: min
         data_type: uint16
       - name: vsr300_refresh_mode_duration
+        unique_id: vsr300_refresh_mode_duration
         #hub: VSR300
         slave: 1
         address: 1103
         input_type: holding
         unit_of_measurement: min
         data_type: uint16
-      - name: vsr300_Crowded_mode_duration
+      - name: vsr300_crowded_mode_duration
+        unique_id: vsr300_crowded_mode_duration
         #hub: VSR300
         slave: 1
         address: 1104
@@ -294,6 +489,7 @@ modbus:
         unit_of_measurement: h
         data_type: uint16
       - name: vsr300_moisture_extraction_sp
+        unique_id: vsr300_moisture_extraction_sp
         #hub: VSR300
         device_class: humidity
         slave: 1
@@ -302,6 +498,7 @@ modbus:
         unit_of_measurement: "%"
         data_type: uint16
       - name: vsr300_fan_speed_comp_read
+        unique_id: vsr300_fan_speed_comp_read
         #hub: VSR300
         device_class: power_factor
         slave: 1
@@ -310,6 +507,7 @@ modbus:
         unit_of_measurement: "%"
         data_type: int16
       - name: vsr300_fan_speed_comp_winter
+        unique_id: vsr300_fan_speed_comp_winter
         #hub: VSR300
         device_class: power_factor
         slave: 1
@@ -318,6 +516,7 @@ modbus:
         unit_of_measurement: "%"
         data_type: int16
       - name: vsr300_fan_speed_comp_winter_start_temp
+        unique_id: vsr300_fan_speed_comp_winter_start_temp
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -329,6 +528,7 @@ modbus:
         precision: 1
         data_type: int16
       - name: vsr300_fan_speed_comp_winter_max_temp
+        unique_id: vsr300_fan_speed_comp_winter_max_temp
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -340,6 +540,7 @@ modbus:
         precision: 1
         data_type: int16
       - name: vsr300_fan_speed_comp_checked
+        unique_id: vsr300_fan_speed_comp_checked
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -351,6 +552,7 @@ modbus:
         precision: 1
         data_type: int16
       - name: vsr300_fan_speed_comp_summer
+        unique_id: vsr300_fan_speed_comp_summer
         #hub: VSR300
         device_class: power_factor
         slave: 1
@@ -359,6 +561,7 @@ modbus:
         unit_of_measurement: "%"
         data_type: int16
       - name: vsr300_fan_speed_comp_summer_start_temp
+        unique_id: vsr300_fan_speed_comp_summer_start_temp
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -370,6 +573,7 @@ modbus:
         precision: 1
         data_type: int16
       - name: vsr300_fan_speed_comp_max_temp
+        unique_id: vsr300_fan_speed_comp_max_temp
         #hub: VSR300
         device_class: temperature
         slave: 1
@@ -381,42 +585,49 @@ modbus:
         precision: 1
         data_type: int16
       - name: vsr300_a_alarm
+        unique_id: vsr300_a_alarm
         #hub: VSR300
         slave: 1
         address: 15900
         input_type: holding
         data_type: uint16
       - name: vsr300_b_alarm
+        unique_id: vsr300_b_alarm
         #hub: VSR300
         slave: 1
         address: 15901
         input_type: holding
         data_type: uint16
       - name: vsr300_c_alarm
+        unique_id: vsr300_c_alarm
         #hub: VSR300
         slave: 1
         address: 15902
         input_type: holding
         data_type: uint16
       - name: vsr300_filter_warning_alarm
+        unique_id: vsr300_filter_warning_alarm
         #hub: VSR300
         slave: 1
         address: 15543
         input_type: holding
         data_type: uint16
       - name: vsr300_filter_alarm
+        unique_id: vsr300_filter_alarm
         #hub: VSR300
         slave: 1
         address: 15141
         input_type: holding
         data_type: uint16
       - name: vsr300_supply_air_temp_low_alarm
+        unique_id: vsr300_supply_air_temp_low_alarm
         #hub: VSR300
         slave: 1
         address: 15176
         input_type: holding
         data_type: uint16
       - name: vsr300_filter_warning_alarm_delay_counter
+        unique_id: vsr300_filter_warning_alarm_delay_counter
         #hub: VSR300
         slave: 1
         address: 15548
@@ -518,6 +729,24 @@ input_number:
     unit_of_measurement: min
     icon: mdi:timelapse
 
+  vsr300_supply_air_fan_speed_normal_sp:
+    name: Supply air fan speed normal
+    min: 1000
+    max: 3000
+    step: 50
+    mode: slider
+    unit_of_measurement: rpm
+    icon: mdi:fan
+
+  vsr300_exhaust_air_fan_speed_normal_sp:
+    name: Exhaust air fan speed normal
+    min: 1000
+    max: 3000
+    step: 50
+    mode: slider
+    unit_of_measurement: rpm
+    icon: mdi:fan
+
 ################################################################################
 # SENSORS
 ################################################################################
@@ -528,12 +757,14 @@ sensor:
       vsr300_supply_air_rf:
         value_template: "{{((states('sensor.vsr300_supply_air_fan') | int) * 3) | round(0) }}"
         friendly_name: "Supply air flow rate"
+        unique_id: vsr300_supply_air_rf
         unit_of_measurement: "m³/h"
   - platform: template
     sensors:
       vsr300_exhaust_air_rf:
         value_template: "{{((states('sensor.vsr300_extractor_fan') | int) * 3) | round(0)}}"
         friendly_name: "Exhaust air flow rate"
+        unique_id: vsr300_exhaust_air_rf
         unit_of_measurement: "m³/h"
   - platform: template
     sensors:
@@ -541,9 +772,11 @@ sensor:
         value_template: "{{((((states('sensor.vsr300_supply_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float)) / ((states('sensor.vsr300_exhaust_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float))) * 100) | round(1) }}"
         unit_of_measurement: "%"
         friendly_name: "Recovery rate"
+        unique_id: vsr300_recovery_rate
 
       vsr300_time_to_filter_change_months:
         friendly_name: "Next filter change"
+        unique_id: vsr300_time_to_filter_change
         value_template: >-
           {% if states('sensor.vsr300_time_to_filter_replacement_s')|int > 1 %}
             {% set time = states('sensor.vsr300_time_to_filter_replacement_s') | int %}
@@ -565,6 +798,7 @@ sensor:
 
       vsr300_away_countdown_time_t:
         friendly_name: "Time remaining when active - Away"
+        unique_id: vsr300_away_countdown_time
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 5 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -590,6 +824,7 @@ sensor:
 
       vsr300_crowded_countdown_time_t:
         friendly_name: "Time remaining when active - Crowded"
+        unique_id: vsr300_crowded_countdown_time
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 2 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -615,6 +850,7 @@ sensor:
 
       vsr300_refresh_countdown_time_t:
         friendly_name: "Time remaining when active - Refresh"
+        unique_id: vsr300_refresh_countdown_time
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 3 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -640,6 +876,7 @@ sensor:
 
       vsr300_fireplace_countdown_time_t:
         friendly_name: "Time remaining when active - Fireplace"
+        unique_id: vsr300_fireplace_countdown_time
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 4 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -665,6 +902,7 @@ sensor:
 
       vsr300_holiday_countdown_time_t:
         friendly_name: "Time remaining when active - Holiday"
+        unique_id: vsr300_holiday_countdown_time
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 6 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
@@ -679,6 +917,7 @@ sensor:
 
       vsr300_summer_winter_operational_status:
         friendly_name: "Active season"
+        unique_id: vs300_active_season01
         value_template: >-
           {% if states('sensor.vsr300_summer_winter_operation')|int == 0 %}
             Summer
@@ -690,6 +929,7 @@ sensor:
 
       vsr300_regulation_mode:
         friendly_name: "Regulation"
+        unique_id: vsr300_regulation_mode
         value_template: >-
           {% if states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 0 %}
             Supply air regulation
@@ -703,6 +943,7 @@ sensor:
 
       vsr300_mode_status:
         friendly_name: "Mode"
+        unique_id: vsr300_mode_status
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 2 %}
             Auto schedule - Low
@@ -735,7 +976,7 @@ sensor:
           {% elif states('sensor.vsr300_mode_status_register')|int == 7 %}
             Cooker Hood
           {% elif states('sensor.vsr300_mode_status_register')|int == 8 %}
-            Vacuum cleaner
+            Vacuum Cleaner
           {% elif states('sensor.vsr300_mode_status_register')|int == 9 %}
             CDI1
           {% elif states('sensor.vsr300_mode_status_register')|int == 10 %}
@@ -750,6 +991,7 @@ sensor:
 
       vsr300_manual_button_mode_status:
         friendly_name: "Manual button mode status"
+        unique_id: vsr300_manual_button_mode_status
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int > 0 %}
             Auto schedule
@@ -770,6 +1012,7 @@ switch:
     switches:
       vsr300_auto_mode:
         friendly_name: Auto mode
+        unique_id: vsr300_auto_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Auto schedule - Low') or is_state('sensor.vsr300_mode_status', 'Auto schedule - Normal') or is_state('sensor.vsr300_mode_status', 'Auto schedule - High')  }}"
         turn_on:
           - service: script.vsr300_auto_mode
@@ -782,6 +1025,7 @@ switch:
 
       vsr300_crowded_mode:
         friendly_name: Crowded-mode
+        unique_id: vsr300_crowded_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Crowded') }}"
         turn_on:
           service: script.vsr300_crowded_mode
@@ -794,6 +1038,7 @@ switch:
 
       vsr300_fireplace_mode:
         friendly_name: Fireplace-mode
+        unique_id: vsr300_fireplace_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Fireplace') }}"
         turn_on:
           service: script.vsr300_fireplace_mode
@@ -806,6 +1051,7 @@ switch:
 
       vsr300_refresh_mode:
         friendly_name: Refresh-mode
+        unique_id: vsr300_refresh_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Refresh') }}"
         turn_on:
           service: script.vsr300_refresh_mode
@@ -818,6 +1064,7 @@ switch:
 
       vsr300_away_mode:
         friendly_name: Away-mode
+        unique_id: vsr300_away_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Away') }}"
         turn_on:
           service: script.vsr300_away_mode
@@ -830,6 +1077,7 @@ switch:
 
       vsr300_holiday_mode:
         friendly_name: Holiday-mode
+        unique_id: vsr300_holiday_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Holiday') }}"
         turn_on:
           service: script.vsr300_holiday_mode
@@ -842,6 +1090,7 @@ switch:
 
       vsr300_man_stop_mode:
         friendly_name: Manual stop
+        unique_id: vsr300_manual_stop_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Manual STOP') }}"
         turn_on:
           - service: script.vsr300_man_stop_mode
@@ -854,6 +1103,7 @@ switch:
 
       vsr300_man_low_mode:
         friendly_name: Low speed
+        unique_id: vsr300_low_speed_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Manual Low') or is_state('sensor.vsr300_mode_status', 'Auto schedule - Low') or is_state('sensor.vsr300_mode_status', 'PPM Auto - Low') }}"
         turn_on:
           - service: script.vsr300_man_low_mode
@@ -866,6 +1116,7 @@ switch:
 
       vsr300_man_normal_mode:
         friendly_name: Normal speed
+        unique_id: vsr300_normal_speed_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Manual Normal') or is_state('sensor.vsr300_mode_status', 'Auto schedule - Normal') or is_state('sensor.vsr300_mode_status', 'PPM Auto - Normal') }}"
         turn_on:
           - service: script.vsr300_man_normal_mode
@@ -878,6 +1129,7 @@ switch:
 
       vsr300_man_high_mode:
         friendly_name: High speed
+        unique_id: vsr300_high_speed_mode
         value_template: "{{ is_state('sensor.vsr300_mode_status', 'Manual High') or is_state('sensor.vsr300_mode_status', 'Auto schedule - High') or is_state('sensor.vsr300_mode_status', 'PPM Auto - High') }}"
         turn_on:
           service: script.vsr300_man_high_mode
@@ -1279,6 +1531,10 @@ script:
           address: 1102
           value: 70
 
+################################################################################
+# Automation
+################################################################################
+
 automation:
   - id: "vsr300getsetpoints"
     alias: VSR300 Get setpoints
@@ -1302,6 +1558,13 @@ automation:
       - platform: state
         entity_id:
           - input_number.vsr300_refresh_mode_duration_sp
+      - platform: state
+        entity_id:
+          - input_number.vsr300_supply_air_fan_speed_normal_sp
+      - platform: state
+        entity_id:
+          - input_number.vsr300_exhaust_air_fan_speed_normal_sp
+
     condition: []
     action:
       - service: input_number.set_value
@@ -1334,9 +1597,20 @@ automation:
           entity_id: input_number.vsr300_refresh_mode_duration_sp
           value: "{{ states('sensor.vsr300_refresh_mode_duration') | int }}"
         alias: Get setpoint refresh
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_supply_air_fan_speed_normal_sp
+          value: "{{ states('sensor.vsr300_supply_air_fan_speed_normal') | int }}"
+        alias: Get setpoint away
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_exhaust_air_fan_speed_normal_sp
+          value: "{{ states('sensor.vsr300_exhaust_air_fan_speed_normal') | int }}"
+        alias: Get setpoint away        
 
   - id: "vsr300SetSetpointCrowded"
     alias: vsr300 Set Setpoint Crowded Mode
+    unique_id: vsr300SetSetpointCrowded01
     description: ""
     trigger:
       - platform: state
@@ -1352,6 +1626,7 @@ automation:
 
   - id: "vsr300SetSetpointEco"
     alias: vsr300 Set Setpoint Eco Mode
+    unique_id: vsr300SetSetpointEco01
     description: ""
     trigger:
       - platform: state
@@ -1367,6 +1642,7 @@ automation:
 
   - id: "vsr300SetSetpointFireplace"
     alias: vsr300 Set Setpoint Fireplace Mode
+    unique_id: vsr300SetSetpointFireplace01
     description: ""
     trigger:
       - platform: state
@@ -1382,6 +1658,7 @@ automation:
 
   - id: "vsr300SetSetpointHoliday"
     alias: vsr300 Set Setpoint Holiday
+    unique_id: vsr300SetSetpointHoliday01
     description: ""
     trigger:
       - platform: state
@@ -1397,6 +1674,7 @@ automation:
 
   - id: "vsr300SetSetpointRefresh"
     alias: vsr300 Set Setpoint Refresh Mode
+    unique_id: vsr300SetSetpointRefresh01
     description: ""
     trigger:
       - platform: state
@@ -1409,3 +1687,49 @@ automation:
           unit: 1
           address: 1103
           value: "{{ states('input_number.vsr300_refresh_mode_duration_sp') | int }}"
+
+  - id: "vsr300SetSetpointAway"
+    alias: vsr300 Set Setpoint Away Mode
+    unique_id: vsr300SetSetpointAway01
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_away_mode_duration_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1101
+          value: "{{ states('input_number.vsr300_away_mode_duration_sp') | int }}"
+
+  - id: "vsr300SetSetpointSAFnorm"
+    alias: vsr300 Set Setpoint Supply air fan speed normal
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_supply_air_fan_speed_normal_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1414
+          value: "{{ states('input_number.vsr300_supply_air_fan_speed_normal_sp') | int }}"
+
+  - id: "vsr300SetSetpointexhaustairfanspeednormal"
+    alias: vsr300 Set Setpoint Exhaust air fan speed normal
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_exhaust_air_fan_speed_normal_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1415
+          value: "{{ states('input_number.vsr300_exhaust_air_fan_speed_normal_sp') | int }}"
