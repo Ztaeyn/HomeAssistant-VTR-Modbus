@@ -494,7 +494,7 @@ input_number:
   vsr300_refresh_mode_duration_sp:
     name: Refresh mode - Desired duration
     min: 1
-    max: 120
+    max: 240
     step: 1
     mode: slider
     unit_of_measurement: min
