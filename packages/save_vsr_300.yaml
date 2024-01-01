@@ -1558,7 +1558,6 @@ script:
 # Automation
 ################################################################################
 
->>>>>>> mainrepo/main
 automation:
   - id: "vsr300getsetpointeco"
     alias: VSR300 Get setpoint Eco Heat offset
