@@ -3,11 +3,14 @@
 ################################################################################
 modbus:
   - name: VSR300
-    type: rtuovertcp
-    host: 192.168.88.15
-    port: 502
+    # See https://www.home-assistant.io/integrations/modbus/
+    type: rtuovertcp #User setting
+    host: 192.168.88.15 #User setting
+    port: 502  #User setting
     timeout: 3 #Timeout for slave response in seconds (default=3)
     delay: 1 #Time to sleep in seconds after connecting and before sending messages (defualt=0)
+    #message_wait_milliseconds: 50 #Increased to hopefully reduce errors in my serial comm (Default:30 for serial connection, 0 for all other connections.)
+
 
     climates:
       - name: vent_VSR300
@@ -440,13 +443,20 @@ modbus:
         offset: 0
         precision: 1
         data_type: uint16
+        scan_interval: 9
       - name: vsr300_countdown_mode_time_s
         unique_id: vsr300_countdown_mode_time
         #hub: VSR300
         slave: 1
         address: 1110
-        input_type: holding
+        input_type: input
         unit_of_measurement: s
+        data_type: uint16
+      - name: vsr300_countdown_mode_time_s_factor
+        #hub: VSR300
+        slave: 1
+        address: 1111
+        input_type: input
         data_type: uint16
       - name: vsr300_holiday_mode_duration
         unique_id: vsr300_holiday_mode_duration
@@ -456,6 +466,7 @@ modbus:
         input_type: holding
         unit_of_measurement: days
         data_type: uint16
+        scan_interval: 9        
       - name: vsr300_away_mode_duration
         unique_id: vsr300_away_mode_duration
         #hub: VSR300
@@ -464,6 +475,7 @@ modbus:
         input_type: holding
         unit_of_measurement: h
         data_type: uint16
+        scan_interval: 9       
       - name: vsr300_fireplace_mode_duration
         unique_id: vsr300_fireplace_mode_duration
         #hub: VSR300
@@ -472,6 +484,7 @@ modbus:
         input_type: holding
         unit_of_measurement: min
         data_type: uint16
+        scan_interval: 9        
       - name: vsr300_refresh_mode_duration
         unique_id: vsr300_refresh_mode_duration
         #hub: VSR300
@@ -480,6 +493,7 @@ modbus:
         input_type: holding
         unit_of_measurement: min
         data_type: uint16
+        scan_interval: 9        
       - name: vsr300_crowded_mode_duration
         unique_id: vsr300_crowded_mode_duration
         #hub: VSR300
@@ -488,6 +502,7 @@ modbus:
         input_type: holding
         unit_of_measurement: h
         data_type: uint16
+        scan_interval: 9        
       - name: vsr300_moisture_extraction_sp
         unique_id: vsr300_moisture_extraction_sp
         #hub: VSR300
@@ -698,7 +713,7 @@ input_number:
     min: 1
     max: 72
     step: 1
-    mode: slider
+    mode: box
     unit_of_measurement: h
     icon: mdi:timelapse
 
@@ -707,7 +722,7 @@ input_number:
     min: 1
     max: 240
     step: 1
-    mode: slider
+    mode: box
     unit_of_measurement: min
     icon: mdi:timelapse
 
@@ -716,7 +731,7 @@ input_number:
     min: 1
     max: 8
     step: 1
-    mode: slider
+    mode: box
     unit_of_measurement: h
     icon: mdi:timelapse
 
@@ -725,7 +740,7 @@ input_number:
     min: 1
     max: 60
     step: 1
-    mode: slider
+    mode: box
     unit_of_measurement: min
     icon: mdi:timelapse
 
@@ -905,15 +920,32 @@ sensor:
         unique_id: vsr300_holiday_countdown_time
         value_template: >-
           {% if states('sensor.vsr300_mode_status_register')|int == 6 %}
-            {% set time = states('sensor.vsr300_countdown_mode_time_s') | int %}
-
+          
+            {% set time = states('sensor.vsr300_countdown_mode_time_s')|int + (states('sensor.vsr300_countdown_mode_time_s_factor')|int * 65535) %}
             {% set days = (time / 86400) | int %}
-              {%- if days > 0 -%}
-                {{ days }} days
-              {%- endif -%}
-           {% else %}
+            {% set hours = ((time % 86400) / 3600) | int %}
+            {% set minutes = ((time % 3600) / 60) | int %}
+
+            {%- if days > 0 -%}
+              {{ days }} days
+            {% else %}
+              {%- if time < 60 -%}
+                Less than 1 minute
+              {%- else -%}
+                {%- if hours > 0 -%}
+                  {{ hours }} h
+                {%- endif -%}
+                {%- if minutes > 0 -%}
+                  {%- if hours > 0 -%}
+                    {{ ' ' }}
+                  {%- endif -%}
+                  {{ minutes }} min
+                {%- endif -%}
+              {%- endif -%}   
+            {%- endif -%}
+          {% else %}
             Inactive
-          {% endif %}
+          {% endif %}      
 
       vsr300_summer_winter_operational_status:
         friendly_name: "Active season"
@@ -1521,77 +1553,103 @@ script:
       service: input_boolean.turn_off
       entity_id: input_boolean.vsr300_holiday_mode_status_dummy
 
-  vsr300_away_setpoint:
-    sequence:
-      - delay: "00:00:02"
-      - service: modbus.write_register
-        data_template:
-          hub: VSR300
-          unit: 1
-          address: 1102
-          value: 70
 
 ################################################################################
 # Automation
 ################################################################################
 
 automation:
-  - id: "vsr300getsetpoints"
-    alias: VSR300 Get setpoints
+  - id: "vsr300getsetpointeco"
+    alias: VSR300 Get setpoint Eco Heat offset
+    mode: restart
     description: ""
     trigger:
       - platform: state
         entity_id:
-          - sensor.vsr300_eco_heat_offset
-      - platform: state
-        entity_id:
-          - input_number.vsr300_away_mode_duration_sp
-      - platform: state
-        entity_id:
-          - input_number.vsr300_crowded_mode_duration_sp
-      - platform: state
-        entity_id:
-          - input_number.vsr300_fireplace_mode_duration_sp
-      - platform: state
-        entity_id:
-          - input_number.vsr300_holiday_mode_duration_sp
-      - platform: state
-        entity_id:
-          - input_number.vsr300_refresh_mode_duration_sp
-      - platform: state
-        entity_id:
-          - input_number.vsr300_supply_air_fan_speed_normal_sp
-      - platform: state
-        entity_id:
-          - input_number.vsr300_exhaust_air_fan_speed_normal_sp
-
+          - input_number.vsr300_eco_offset_temp_sp
     condition: []
     action:
+      - delay: "00:00:11"
       - service: input_number.set_value
         data_template:
           entity_id: input_number.vsr300_eco_offset_temp_sp
           value: "{{ states('sensor.vsr300_eco_heat_offset') | int }}"
-        alias: Get setpoint eco offset temp
+        alias: Get setpoint eco offset temp        
+  - id: "vsr300getsetpointaway"
+    alias: VSR300 Get setpoint Away Duration
+    mode: restart
+    description: ""
+    trigger:        
+      - platform: state
+        entity_id:
+          - input_number.vsr300_away_mode_duration_sp
+    condition: []
+    action:
+      - delay: "00:00:11"
       - service: input_number.set_value
         data_template:
           entity_id: input_number.vsr300_away_mode_duration_sp
           value: "{{ states('sensor.vsr300_away_mode_duration') | int }}"
         alias: Get setpoint away
+  - id: "vsr300getsetpointcrowded"
+    alias: VSR300 Get setpoint Crowded Duration
+    mode: restart
+    description: ""
+    trigger:           
+      - platform: state
+        entity_id:
+          - input_number.vsr300_crowded_mode_duration
+    condition: []
+    action:
+      - delay: "00:00:11"
       - service: input_number.set_value
         data_template:
           entity_id: input_number.vsr300_crowded_mode_duration
           value: "{{ states('sensor.vsr300_crowded_mode_duration') | int }}"
         alias: Get setpoint crowded
+  - id: "vsr300getsetpointfireplace"
+    alias: VSR300 Get setpoint Fireplace Duration
+    mode: restart
+    description: ""
+    trigger:                   
+      - platform: state
+        entity_id:
+          - input_number.vsr300_fireplace_mode_duration_sp
+    condition: []
+    action:
+      - delay: "00:00:11"
       - service: input_number.set_value
         data_template:
           entity_id: input_number.vsr300_fireplace_mode_duration_sp
           value: "{{ states('sensor.vsr300_fireplace_mode_duration') | int }}"
         alias: Get setpoint fireplace
+  - id: "vsr300getsetpointholiday"
+    alias: VSR300 Get setpoint Holiday Duration
+    mode: restart
+    description: ""
+    trigger:                            
+      - platform: state
+        entity_id:
+          - input_number.vsr300_holiday_mode_duration_sp
+    condition: []
+    action:
+      - delay: "00:00:11"
       - service: input_number.set_value
         data_template:
           entity_id: input_number.vsr300_holiday_mode_duration_sp
           value: "{{ states('sensor.vsr300_holiday_mode_duration') | int }}"
         alias: Get setpoint holiday
+  - id: "vsr300getsetpointrefresh"
+    alias: VSR300 Get setpoint Refresh Duration
+    mode: restart
+    description: ""
+    trigger:                   
+      - platform: state
+        entity_id:
+          - input_number.vsr300_refresh_mode_duration_sp
+    condition: []
+    action:
+      - delay: "00:00:11"
       - service: input_number.set_value
         data_template:
           entity_id: input_number.vsr300_refresh_mode_duration_sp
@@ -1655,6 +1713,21 @@ automation:
           unit: 1
           address: 1102
           value: "{{ states.input_number.vsr300_fireplace_mode_duration_sp.state | int }}"
+          
+  - id: "vsr300SetSetpointAway"
+    alias: vsr300 Set Setpoint Away Mode
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_away_mode_duration_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 1101
+          value: "{{ states.input_number.vsr300_away_mode_duration_sp.state | int }}"          
 
   - id: "vsr300SetSetpointHoliday"
     alias: vsr300 Set Setpoint Holiday
