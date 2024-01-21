@@ -4,11 +4,11 @@
 modbus:
   - name: VSR300
     # See https://www.home-assistant.io/integrations/modbus/
-    type: rtuovertcp #User setting
-    host: 192.168.88.15 #User setting
-    port: 502  #User setting
-    timeout: 3 #Timeout for slave response in seconds (default=3)
-    delay: 1 #Time to sleep in seconds after connecting and before sending messages (defualt=0)
+    type: tcp           #User setting
+    host: 192.168.10.22 #User setting
+    port: 8432          #User setting
+    timeout: 3          #Timeout for slave response in seconds (default=3)
+    delay: 1            #Time to sleep in seconds after connecting and before sending messages (defualt=0)
     #message_wait_milliseconds: 50 #Increased to hopefully reduce errors in my serial comm (Default:30 for serial connection, 0 for all other connections.)
 
 
@@ -272,32 +272,32 @@ modbus:
         input_type: holding
         unit_of_measurement: rpm
         data_type: uint16
-      - name: vsr300_supply_air_fan_speed_low
-        unique_id: vsr300_saf_speed_low
+      - name: vsr300_supply_air_fan_speed_low_rpm
+        unique_id: vsr300_saf_speed_low_rpm
         #hub: VSR300
         slave: 1
         address: 1412
         input_type: holding
         unit_of_measurement: rpm
         data_type: uint16
-      - name: vsr300_exhaust_air_fan_speed_low
-        unique_id: vsr300_eaf_speed_low
+      - name: vsr300_exhaust_air_fan_speed_low_rpm
+        unique_id: vsr300_eaf_speed_low_rpm
         #hub: VSR300
         slave: 1
         address: 1413
         input_type: holding
         unit_of_measurement: rpm
         data_type: uint16
-      - name: vsr300_supply_air_fan_speed_minimum
-        unique_id: vsr300_saf_speed_minimum
+      - name: vsr300_supply_air_fan_speed_minimum_rpm
+        unique_id: vsr300_saf_speed_minimum_rpm
         #hub: VSR300
         slave: 1
         address: 1410
         input_type: holding
         unit_of_measurement: rpm
         data_type: uint16
-      - name: vsr300_exhaust_air_fan_speed_minimum
-        unique_id: vsr300_eaf_speed_minimum
+      - name: vsr300_exhaust_air_fan_speed_minimum_rpm
+        unique_id: vsr300_eaf_speed_minimum_rpm
         #hub: VSR300
         slave: 1
         address: 1411
@@ -704,7 +704,7 @@ input_number:
     min: 1
     max: 365
     step: 1
-    mode: box
+    mode: slider
     unit_of_measurement: days
     icon: mdi:timelapse
 
@@ -713,7 +713,7 @@ input_number:
     min: 1
     max: 72
     step: 1
-    mode: box
+    mode: slider
     unit_of_measurement: h
     icon: mdi:timelapse
 
@@ -722,7 +722,7 @@ input_number:
     min: 1
     max: 240
     step: 1
-    mode: box
+    mode: slider
     unit_of_measurement: min
     icon: mdi:timelapse
 
@@ -731,7 +731,7 @@ input_number:
     min: 1
     max: 8
     step: 1
-    mode: box
+    mode: slider
     unit_of_measurement: h
     icon: mdi:timelapse
 
@@ -740,7 +740,7 @@ input_number:
     min: 1
     max: 60
     step: 1
-    mode: box
+    mode: slider
     unit_of_measurement: min
     icon: mdi:timelapse
 
@@ -761,6 +761,15 @@ input_number:
     mode: slider
     unit_of_measurement: rpm
     icon: mdi:fan
+
+  vsr300_filter_replacement_period_months_sp:
+    name: Filter Replacement Cycle
+    min: 3
+    max: 15
+    step: 1
+    mode: slider
+    unit_of_measurement: months
+    icon: mdi:timelapse
 
 ################################################################################
 # SENSORS
@@ -1664,11 +1673,27 @@ automation:
         data_template:
           entity_id: input_number.vsr300_exhaust_air_fan_speed_normal_sp
           value: "{{ states('sensor.vsr300_exhaust_air_fan_speed_normal') | int }}"
-        alias: Get setpoint away        
+        alias: Get setpoint away  
+  - id: "vsr300getsetpointfilter"
+    alias: VSR300 Get setpoint Filter Replacement
+    mode: restart
+    description: ""
+    trigger:                   
+      - platform: state
+        entity_id:
+          - input_number.vsr300_filter_replacement_period_months_sp
+    condition: []
+    action:
+      - delay: "00:00:11"
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.vsr300_filter_replacement_period_months_sp
+          value: "{{ states('sensor.vsr300_filter_replacement_period_months') | int }}"
+        alias: Get setpoint filter
 
   - id: "vsr300SetSetpointCrowded"
     alias: vsr300 Set Setpoint Crowded Mode
-    unique_id: vsr300SetSetpointCrowded01
+#    unique_id: vsr300SetSetpointCrowded01
     description: ""
     trigger:
       - platform: state
@@ -1684,7 +1709,7 @@ automation:
 
   - id: "vsr300SetSetpointEco"
     alias: vsr300 Set Setpoint Eco Mode
-    unique_id: vsr300SetSetpointEco01
+#    unique_id: vsr300SetSetpointEco01
     description: ""
     trigger:
       - platform: state
@@ -1700,7 +1725,7 @@ automation:
 
   - id: "vsr300SetSetpointFireplace"
     alias: vsr300 Set Setpoint Fireplace Mode
-    unique_id: vsr300SetSetpointFireplace01
+#    unique_id: vsr300SetSetpointFireplace01
     description: ""
     trigger:
       - platform: state
@@ -1731,7 +1756,7 @@ automation:
 
   - id: "vsr300SetSetpointHoliday"
     alias: vsr300 Set Setpoint Holiday
-    unique_id: vsr300SetSetpointHoliday01
+#    unique_id: vsr300SetSetpointHoliday01
     description: ""
     trigger:
       - platform: state
@@ -1747,7 +1772,7 @@ automation:
 
   - id: "vsr300SetSetpointRefresh"
     alias: vsr300 Set Setpoint Refresh Mode
-    unique_id: vsr300SetSetpointRefresh01
+#    unique_id: vsr300SetSetpointRefresh01
     description: ""
     trigger:
       - platform: state
@@ -1760,22 +1785,6 @@ automation:
           unit: 1
           address: 1103
           value: "{{ states('input_number.vsr300_refresh_mode_duration_sp') | int }}"
-
-  - id: "vsr300SetSetpointAway"
-    alias: vsr300 Set Setpoint Away Mode
-    unique_id: vsr300SetSetpointAway01
-    description: ""
-    trigger:
-      - platform: state
-        entity_id: input_number.vsr300_away_mode_duration_sp
-    condition: []
-    action:
-      - service: modbus.write_register
-        data_template:
-          hub: VSR300
-          unit: 1
-          address: 1101
-          value: "{{ states('input_number.vsr300_away_mode_duration_sp') | int }}"
 
   - id: "vsr300SetSetpointSAFnorm"
     alias: vsr300 Set Setpoint Supply air fan speed normal
@@ -1806,3 +1815,19 @@ automation:
           unit: 1
           address: 1415
           value: "{{ states('input_number.vsr300_exhaust_air_fan_speed_normal_sp') | int }}"
+
+  - id: "vsr300SetSetpointFilter"
+    alias: vsr300 Set Setpoint Filter Replacement
+#    unique_id: vsr300SetSetpointFilter01
+    description: ""
+    trigger:
+      - platform: state
+        entity_id: input_number.vsr300_filter_replacement_period_months_sp
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 7000
+          value: "{{ states.input_number.vsr300_filter_replacement_period_months_sp.state | int }}"
