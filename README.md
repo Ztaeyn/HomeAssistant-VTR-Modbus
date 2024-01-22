@@ -9,13 +9,14 @@ And a big thanks to cmragnar who branched off and created a package out of this,
 * https://github.com/cmragnar/HomeAssistant-VSR300-Modbus
 
 With this you currently can:
-- Change operation Mode
-- Set duration setpoint for Away, Vacation, Boost and Party
+- Change operation Modes, Auto, Low/medium/high, Crowded/Party, Refresh/Boost, Away, Vacation. Stop seems to need a look at.
+- Set duration setpoint for Away, Vacation, Boost/Refresh and Crowded/Party
+- See alarm status and filter replacement countdown, and adjust the filter countdown.
+- Etc
 - See alarm status and filter replacement countdown.
-  - TODO: Setup notifications to my phone.
 - Set wanted temperature on the VTR thermostat.
 - Create automations your own automations using the above. 
-  - TODO: Set automatic Away when me and my partner are at Work. 
+
 
 Known Issues:
 See Issues Tab.
@@ -35,7 +36,7 @@ HACS addons used:
 
 Image of my Control Panel with full settings. A feedback check is added for Setpoints, with a comparison of the input number and the VTR sensor. Green when matching, Red when matching/waiting for sync.
 
-<img src="https://user-images.githubusercontent.com/58105460/212980334-ebb6171f-e2f8-463c-b7aa-30d927fd5b3e.png" width="400">
+<img src="https://github.com/Ztaeyn/HomeAssistant-VTR-Modbus/assets/58105460/8f39f98b-262c-4d0f-89ce-9f4b6302b91d" width="800">
 <img src="https://user-images.githubusercontent.com/58105460/212980462-d8833cf8-0271-4090-b510-cd9a067c1393.png" width="400">
 
 
