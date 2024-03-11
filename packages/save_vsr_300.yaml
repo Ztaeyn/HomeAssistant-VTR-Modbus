@@ -39,18 +39,21 @@ modbus:
         offset: 0
         precision: 1
         data_type: int16
-      - name: vsr300_supply_temperature
-        unique_id: vsr300_supply_temperature
-        ##hub: VSR300
-        device_class: temperature
-        slave: 1
-        address: 12102
-        input_type: holding
-        unit_of_measurement: °C
-        scale: 0.1
-        offset: 0
-        precision: 1
-        data_type: int16
+
+ # Removed due to HA2024.3 not allowing duplicate use of address. Replaced with template sensor under # SENSORS.
+ #     - name: vsr300_supply_temperature
+ #       unique_id: vsr300_supply_temperature
+ #       ##hub: VSR300
+ #       device_class: temperature
+ #       slave: 1
+ #       address: 12102
+ #       input_type: holding
+ #       unit_of_measurement: °C
+ #       scale: 0.1
+ #       offset: 0
+ #       precision: 1
+ #       data_type: int16
+
       - name: vsr300_exhaust_temperature
         unique_id: vsr300_exhaust_temperature
         #hub: VSR300
@@ -776,6 +779,13 @@ input_number:
 ################################################################################
 
 sensor:
+  - platform: template
+    sensors:
+      vsr300_supply_temperature:
+        value_template: "{{ state_attr('climate.vent_VSR300', 'current_temperature') }}"
+        friendly_name: "vsr300 supply temperature"
+        unique_id: vsr300_supply_temperature
+        unit_of_measurement: "°C"
   - platform: template
     sensors:
       vsr300_supply_air_rf:
