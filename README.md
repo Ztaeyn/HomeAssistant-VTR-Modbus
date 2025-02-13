@@ -30,30 +30,11 @@ Sources:
 
 HACS addons used:
 https://github.com/piitaya/lovelace-mushroom
-<delhttps://github.com/thomasloven/lovelace-card-mod</del>
-
-<delhttps://github.com/custom-cards/button-card</del>
-
-<delhttps://github.com/htmltiger/numberbox-card</del>
-
-
-Image of my Control Panel with full settings. A feedback check is added for Setpoints, with a comparison of the input number and the VTR sensor. Green when matching, Red when matching/waiting for sync.
 
 
 ![Default](https://github.com/user-attachments/assets/a0467636-c3ff-4790-8e7c-c02a383abb0c)
 
 ![Show_Hidden](https://github.com/user-attachments/assets/d4873ae1-38c1-4ed0-8341-4194d6927988)
-
-
-
-
-For the daily driver I have an overview with room cards displaying the operational state.
-
-<img src="https://user-images.githubusercontent.com/58105460/211211807-b32b8dc6-8816-4dd9-9e3c-e7384acd6bf9.png" width="400">
-
-With the room having a stripped down setup, linking via Config to the control panel.
-
-<img src="https://user-images.githubusercontent.com/58105460/211211838-831058e2-42f3-409c-b5d5-5fb6a4974f4a.png" width="400">
 
 
 
