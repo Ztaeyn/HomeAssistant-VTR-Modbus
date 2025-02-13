@@ -31,10 +31,9 @@ Sources:
 HACS addons used:
 https://github.com/piitaya/lovelace-mushroom
 
+![default](https://github.com/user-attachments/assets/aa2a04d6-4e4f-4ca8-87f8-1659b82ea11e)
+![show_hidden](https://github.com/user-attachments/assets/f18d5374-40f2-45e3-ac26-86870fb9ec56)
 
-![Default](https://github.com/user-attachments/assets/a0467636-c3ff-4790-8e7c-c02a383abb0c)
-
-![Show_Hidden](https://github.com/user-attachments/assets/d4873ae1-38c1-4ed0-8341-4194d6927988)
 
 
 
