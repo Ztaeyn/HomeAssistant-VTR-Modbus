@@ -39,6 +39,11 @@ Image of my Control Panel with full settings. A feedback check is added for Setp
 <img src="https://github.com/Ztaeyn/HomeAssistant-VTR-Modbus/assets/58105460/8f39f98b-262c-4d0f-89ce-9f4b6302b91d" width="800">
 <img src="https://user-images.githubusercontent.com/58105460/212980462-d8833cf8-0271-4090-b510-cd9a067c1393.png" width="400">
 
+![Default](https://github.com/user-attachments/assets/a0467636-c3ff-4790-8e7c-c02a383abb0c)
+
+![Show_Hidden](https://github.com/user-attachments/assets/d4873ae1-38c1-4ed0-8341-4194d6927988)
+
+
 
 
 For the daily driver I have an overview with room cards displaying the operational state.
