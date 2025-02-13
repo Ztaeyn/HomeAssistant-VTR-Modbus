@@ -1,335 +1,409 @@
-square: false
-columns: 1
-type: grid
-cards:
-  - type: horizontal-stack
+type: sections
+max_columns: 3
+title: Ventilasjon
+path: ventilation
+sections:
+  - type: grid
     cards:
-      - type: custom:mushroom-entity-card
-        entity: sensor.vsr300_mode_status
-        primary_info: none
-        icon_type: none
-      - type: conditional
-        conditions:
-          - entity: switch.vsr300_away_mode
-            state: 'on'
-        card:
-          type: custom:mushroom-entity-card
-          entity: sensor.vsr300_away_countdown_time_t
-          primary_info: none
-          icon_type: none
-      - type: conditional
-        conditions:
-          - entity: switch.vsr300_crowded_mode
-            state: 'on'
-        card:
-          type: custom:mushroom-entity-card
-          entity: sensor.vsr300_crowded_countdown_time_t
-          primary_info: none
-          icon_type: none
-      - type: conditional
-        conditions:
-          - entity: switch.vsr300_refresh_mode
-            state: 'on'
-        card:
-          type: custom:mushroom-entity-card
-          entity: sensor.vsr300_refresh_countdown_time_t
-          primary_info: none
-          icon_type: none
-      - type: conditional
-        conditions:
-          - entity: switch.vsr300_holiday_mode
-            state: 'on'
-        card:
-          type: custom:mushroom-entity-card
-          entity: sensor.vsr300_holiday_countdown_time_t
-          primary_info: none
-          icon_type: none
-  - square: false
-    columns: 5
-    type: grid
-    cards:
-      - type: custom:button-card
+      - type: heading
+        heading: Mode Control
+        heading_style: title
+      - type: tile
         entity: switch.vsr300_auto_mode
         icon: mdi:fan-auto
-        aspect_ratio: 1/1
-        show_state: false
         name: Auto
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
+        color: accent
+        tap_action:
+          action: toggle
+      - type: tile
         entity: switch.vsr300_man_low_mode
         icon: mdi:fan-speed-1
-        aspect_ratio: 1/1
-        show_state: false
-        name: Lav
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  if (states["sensor.vsr300_manual_mode_command_register"].state == 2) return 'orange'
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
+        name: Manual Low
+        color: accent
+        tap_action:
+          action: toggle
+      - type: tile
         entity: switch.vsr300_man_normal_mode
         icon: mdi:fan-speed-2
-        aspect_ratio: 1/1
-        show_state: false
-        name: Normal
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  if (states["sensor.vsr300_manual_mode_command_register"].state == 3) return 'orange'
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
+        name: Manual Normal
+        color: accent
+        tap_action:
+          action: toggle
+      - type: tile
         entity: switch.vsr300_man_high_mode
         icon: mdi:fan-speed-3
-        aspect_ratio: 1/1
-        show_state: false
-        name: Høy
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  if (states["sensor.vsr300_manual_mode_command_register"].state == 4) return 'orange'
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
+        name: Manual High
+        color: accent
+        tap_action:
+          action: toggle
+      - type: tile
         entity: switch.vsr300_crowded_mode
         icon: mdi:fan-chevron-up
-        aspect_ratio: 1/1
-        show_state: false
-        name: Party
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
+        name: Crowded
+        color: accent
+        tap_action:
+          action: toggle
+      - type: tile
         entity: switch.vsr300_refresh_mode
         icon: mdi:fan-plus
-        aspect_ratio: 1/1
-        show_state: false
-        name: Boost
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
+        name: Refresh
+        color: accent
+        tap_action:
+          action: toggle
+      - type: tile
         entity: switch.vsr300_away_mode
         icon: mdi:fan-minus
-        aspect_ratio: 1/1
-        show_state: false
-        name: Borte
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
+        name: Away
+        color: accent
+        tap_action:
+          action: toggle
+      - type: tile
         entity: switch.vsr300_holiday_mode
         icon: mdi:fan-remove
-        aspect_ratio: 1/1
-        show_state: false
-        name: Ferie
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
+        name: Holiday
+        color: accent
+        tap_action:
+          action: toggle
+      - type: tile
         entity: switch.vsr300_man_stop_mode
         icon: mdi:fan-off
-        aspect_ratio: 1/1
-        show_state: false
-        name: Stopp
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'on' ) return 'red' 
-                  else return '#50729c';
-                ]]]
-      - type: custom:button-card
-        entity: sensor.vsr300_mode_status
-        icon: mdi:car-brake-low-pressure
-        aspect_ratio: 1/1
-        show_state: false
-        show_name: true
-        name: Trykkvakt
-        styles:
-          icon:
-            - color: |
-                [[[
-                  if (entity.state == 'Pressure guard' ) return 'orange' 
-                  else return '#50729c';
-                ]]]
-  - type: entities
-    show_header_toggle: false
-    entities:
-      - entity: input_number.vsr300_refresh_mode_duration_sp
-        type: custom:numberbox-card
-        name: BoostModus Setpunkt
-        icon: mdi:timelapse
-        unit: m
-        style: >
-          :host { {% if states('input_number.vsr300_refresh_mode_duration_sp') |
-          float == states('sensor.vsr300_refresh_mode_duration') | float %}
-              --paper-item-icon-color: green;
-              color: green;
-            {% else %}
-              --paper-item-icon-color: red;
-              color: red;
-            {% endif %}
-          }
-      - entity: input_number.vsr300_crowded_mode_duration_sp
-        type: custom:numberbox-card
-        name: PartyModus Setpunkt
-        icon: mdi:timelapse
-        unit: t
-        style: >
-          :host { {% if states('input_number.vsr300_crowded_mode_duration_sp') |
-          float == states('sensor.vsr300_crowded_mode_duration') | float %}
-              --paper-item-icon-color: green;
-              color: green;
-            {% else %}
-              --paper-item-icon-color: red;
-              color: red;
-            {% endif %}
-          }
-      - entity: input_number.vsr300_away_mode_duration_sp
-        type: custom:numberbox-card
-        name: BorteModus Setpunkt
-        icon: mdi:timelapse
-        unit: t
-        style: >
-          :host { {% if states('input_number.vsr300_away_mode_duration_sp') |
-          float == states('sensor.vsr300_away_mode_duration') | float %}
-              --paper-item-icon-color: green;
-              color: green;
-            {% else %}
-              --paper-item-icon-color: red;
-              color: red;
-            {% endif %}
-          }
-      - entity: input_number.vsr300_holiday_mode_duration_sp
-        type: custom:numberbox-card
-        name: FerieModus Setpunkt
-        icon: mdi:timelapse
-        unit: d
-        style: >
-          :host { {% if states('input_number.vsr300_holiday_mode_duration_sp') |
-          float == states('sensor.vsr300_holiday_mode_duration') | float %}
-              --paper-item-icon-color: green;
-              color: green;
-            {% else %}
-              --paper-item-icon-color: red;
-              color: red;
-            {% endif %}
-          }
-      - entity: input_number.vsr300_eco_offset_temp_sp
-        type: custom:numberbox-card
-        name: Eco Offset Setpunkt
-        icon: mdi:timelapse
-        unit: °C
-        style: >
-          :host { {% if states('input_number.vsr300_eco_offset_temp_sp') | float
-          == states('sensor.vsr300_eco_heat_offset') | float %}
-              --paper-item-icon-color: green;
-              color: green;
-            {% else %}
-              --paper-item-icon-color: red;
-              color: red;
-            {% endif %}
-          }
-  - type: horizontal-stack
+        name: Manual Stop
+        color: accent
+        tap_action:
+          action: toggle
+    column_span: 2
+  - type: grid
     cards:
-      - type: custom:button-card
-        color_type: card
-        entity: sensor.vsr300_a_alarm
-        aspect_ratio: 2/1
-        show_name: true
-        name: A# Alarm
-        state:
-          - value: true
-            color: red
-            icon: mdi:alert
-            styles:
-              card:
-                - animation: blink 2s ease infinite
-          - operator: default
-            color: green
-            icon: mdi:alarm-light
-      - type: custom:button-card
-        color_type: card
-        entity: sensor.vsr300_b_alarm
-        aspect_ratio: 2/1
-        show_name: true
-        name: B# Alarm
-        state:
-          - value: true
-            color: red
-            icon: mdi:alert
-            styles:
-              card:
-                - animation: blink 2s ease infinite
-          - operator: default
-            color: green
-            icon: mdi:alarm-light
-      - type: custom:button-card
-        color_type: card
-        entity: sensor.vsr300_c_alarm
-        aspect_ratio: 2/1
-        show_name: true
-        name: C# Alarm
-        state:
-          - value: true
-            color: red
-            icon: mdi:alert
-            styles:
-              card:
-                - animation: blink 2s ease infinite
-          - operator: default
-            color: green
-            icon: mdi:alarm-light
-      - type: custom:button-card
-        color_type: card
-        entity: sensor.vsr300_filter_warning_alarm
-        aspect_ratio: 2/1
-        show_name: true
-        name: Filter Alarm
-        state:
-          - value: true
-            color: red
-            icon: mdi:alert
-            styles:
-              card:
-                - animation: blink 2s ease infinite
-          - operator: default
-            color: green
-            icon: mdi:air-filter
-  - type: custom:mushroom-climate-card
-    entity: climate.vent_vsr300
-    name: Systemair Termostat
-  - square: false
-    columns: 1
-    type: grid
-    cards: []
+      - type: heading
+        heading: Status
+        heading_style: title
+      - type: conditional
+        conditions:
+          - condition: or
+            conditions:
+              - condition: state
+                entity: switch.vsr300_away_mode
+                state: "on"
+              - condition: state
+                entity: switch.vsr300_crowded_mode
+                state: "on"
+              - condition: state
+                entity: switch.vsr300_refresh_mode
+                state: "on"
+              - condition: state
+                entity: switch.vsr300_holiday_mode
+                state: "on"
+        card:
+          type: custom:mushroom-template-card
+          primary: |2-
+              {% if is_state('switch.vsr300_away_mode', 'on') %}
+              Away
+              {% elif 
+              is_state('switch.vsr300_crowded_mode', 'on')%}
+              Crowded  
+              {% elif 
+              is_state('switch.vsr300_refresh_mode', 'on')%}
+              Refresh 
+              {% elif 
+              is_state('switch.vsr300_refresh_mode', 'on')%}
+              Holiday  
+              {% else %}
+              Normal Operation
+              {% endif %}
+          secondary: >2-
+              {% if is_state('switch.vsr300_away_mode', 'on') %}
+            Remaining:  {{ states('sensor.vsr300_away_countdown_time_t') |
+            default('Not Set') }}
+              {% elif 
+              is_state('switch.vsr300_crowded_mode', 'on')%}
+            Remaining:  {{ states('sensor.vsr300_crowded_countdown_time_t') |
+            default('Not Set') }}
+              {% elif 
+              is_state('switch.vsr300_refresh_mode', 'on')%}
+            Remaining:  {{ states('sensor.vsr300_refresh_countdown_time_t') |
+            default('Not Set') }} 
+              {% elif 
+              is_state('switch.vsr300_refresh_mode', 'on')%}
+            Remaining:  {{ states('sensor.vsr300_holiday_countdown_time_t') |
+            default('Not Set') }}
+              {% else %}
+              Normal Operation
+              {% endif %}
+          icon: |2-
+              {% if is_state('switch.vsr300_away_mode', 'on') %}
+              mdi:fan-minus
+              {% elif 
+              is_state('switch.vsr300_crowded_mode', 'on')%}
+              mdi:fan-chevron-up  
+              {% elif 
+              is_state('switch.vsr300_refresh_mode', 'on')%}
+              mdi:fan-plus 
+              {% elif 
+              is_state('switch.vsr300_refresh_mode', 'on')%}
+              mdi:fan-remove
+              {% else %}
+              mdi:fan
+              {% endif %}
+          multiline_secondary: false
+          fill_container: false
+          icon_color: orange
+          badge_icon: ""
+          card_mod:
+            style:
+              mushroom-shape-icon$: |
+                .shape {
+                  --shape-animation: ping 2s infinite;
+                }
+                @keyframes ping {
+                  0% { box-shadow: 0 0 1px 1px rgba(var(--rgb-red), 0.7); }
+                  100% { box-shadow: 0 0 5px 15px transparent; }
+                }
+              .: |
+                mushroom-shape-icon {
+                  animation: blink 1s ease-in-out infinite;
+                }
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: sensor.vsr300_mode_status
+            state: Pressure guard
+        card:
+          type: custom:mushroom-template-card
+          primary: Pressure Guard Active
+          secondary: ""
+          icon: mdi:car-brake-low-pressure
+          multiline_secondary: false
+          fill_container: false
+          icon_color: orange
+          badge_icon: ""
+          card_mod:
+            style:
+              mushroom-shape-icon$: |
+                .shape {
+                  --shape-animation: ping 2s infinite;
+                }
+                @keyframes ping {
+                  0% { box-shadow: 0 0 1px 1px rgba(var(--rgb-red), 0.7); }
+                  100% { box-shadow: 0 0 5px 15px transparent; }
+                }
+              .: |
+                mushroom-shape-icon {
+                  animation: blink 1s ease-in-out infinite;
+                }
+      - type: tile
+        entity: sensor.vsr300_supply_temperature
+        name: Inntak Temperatur
+        vertical: false
+        show_entity_picture: false
+      - type: tile
+        entity: sensor.vsr300_exhaust_temperature
+        name: Avtrekk Temperatur
+        vertical: false
+        show_entity_picture: false
+      - type: tile
+        entity: sensor.vsr300_heat_recovery
+        name: Varmegjenvinning
+        vertical: false
+        show_entity_picture: false
+      - type: tile
+        entity: sensor.vsr300_time_to_filter_change_months
+        name: Neste filterbytte
+        vertical: false
+        show_entity_picture: false
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: sensor.vsr300_a_alarm
+            state: "1"
+        card:
+          type: custom:mushroom-template-card
+          primary: A# Alarm
+          secondary: ""
+          icon: mdi:alert
+          multiline_secondary: false
+          fill_container: false
+          icon_color: red
+          badge_icon: ""
+          card_mod:
+            style:
+              mushroom-shape-icon$: |
+                .shape {
+                  --shape-animation: ping 2s infinite;
+                }
+                @keyframes ping {
+                  0% { box-shadow: 0 0 1px 1px rgba(var(--rgb-red), 0.7); }
+                  100% { box-shadow: 0 0 5px 15px transparent; }
+                }
+              .: |
+                mushroom-shape-icon {
+                  animation: blink 1s ease-in-out infinite;
+                }
+                @keyframes blink {
+                  50% {opacity: 0.5;}
+                }
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: sensor.vsr300_b_alarm
+            state: "1"
+        card:
+          type: custom:mushroom-template-card
+          primary: B# Alarm
+          secondary: ""
+          icon: mdi:alert
+          multiline_secondary: false
+          fill_container: false
+          icon_color: red
+          badge_icon: ""
+          card_mod:
+            style:
+              mushroom-shape-icon$: |
+                .shape {
+                  --shape-animation: ping 2s infinite;
+                }
+                @keyframes ping {
+                  0% { box-shadow: 0 0 1px 1px rgba(var(--rgb-red), 0.7); }
+                  100% { box-shadow: 0 0 5px 15px transparent; }
+                }
+              .: |
+                mushroom-shape-icon {
+                  animation: blink 1s ease-in-out infinite;
+                }
+                @keyframes blink {
+                  50% {opacity: 0.5;}
+                }
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: sensor.vsr300_c_alarm
+            state: "1"
+        card:
+          type: custom:mushroom-template-card
+          primary: C# Alarm
+          secondary: ""
+          icon: mdi:alert
+          multiline_secondary: false
+          fill_container: false
+          icon_color: red
+          badge_icon: ""
+          card_mod:
+            style:
+              mushroom-shape-icon$: |
+                .shape {
+                  --shape-animation: ping 2s infinite;
+                }
+                @keyframes ping {
+                  0% { box-shadow: 0 0 1px 1px rgba(var(--rgb-red), 0.7); }
+                  100% { box-shadow: 0 0 5px 15px transparent; }
+                }
+              .: |
+                mushroom-shape-icon {
+                  animation: blink 1s ease-in-out infinite;
+                }
+                @keyframes blink {
+                  50% {opacity: 0.5;}
+                }
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: sensor.vsr300_filter_warning_alarm
+            state: "1"
+        card:
+          type: custom:mushroom-template-card
+          primary: Filter Alarm
+          secondary: ""
+          icon: mdi:air-filter
+          multiline_secondary: false
+          fill_container: false
+          icon_color: red
+          badge_icon: ""
+          card_mod:
+            style:
+              mushroom-shape-icon$: |
+                .shape {
+                  --shape-animation: ping 2s infinite;
+                }
+                @keyframes ping {
+                  0% { box-shadow: 0 0 1px 1px rgba(var(--rgb-red), 0.7); }
+                  100% { box-shadow: 0 0 5px 15px transparent; }
+                }
+              .: |
+                mushroom-shape-icon {
+                  animation: blink 1s ease-in-out infinite;
+                }
+                @keyframes blink {
+                  50% {opacity: 0.5;}
+                }
+  - type: grid
+    cards:
+      - type: heading
+        heading: Setpoints
+        heading_style: title
+        icon: mdi:clock-end
+      - features:
+          - type: numeric-input
+            style: buttons
+        type: tile
+        entity: input_number.vsr300_crowded_mode_duration_sp
+        name: Crowded
+        vertical: false
+        hide_state: true
+        show_entity_picture: false
+      - features:
+          - type: numeric-input
+            style: buttons
+        type: tile
+        entity: input_number.vsr300_crowded_mode_duration_sp
+        name: Crowded
+        vertical: false
+        hide_state: true
+        show_entity_picture: false
+      - features:
+          - type: numeric-input
+            style: buttons
+        type: tile
+        entity: input_number.vsr300_away_mode_duration_sp
+        name: Away
+        vertical: false
+        hide_state: true
+        show_entity_picture: false
+      - features:
+          - type: numeric-input
+            style: buttons
+        type: tile
+        entity: input_number.vsr300_holiday_mode_duration_sp
+        name: Holiday
+        vertical: false
+        hide_state: true
+        show_entity_picture: false
+      - features:
+          - type: numeric-input
+            style: buttons
+        type: tile
+        entity: input_number.vsr300_eco_offset_temp_sp
+        name: Eco Offset
+        vertical: false
+        hide_state: true
+        show_entity_picture: false
+      - features:
+          - type: numeric-input
+            style: buttons
+        type: tile
+        entity: input_number.vsr300_filter_replacement_period_months_sp
+        name: Filter Change
+        vertical: false
+        hide_state: true
+        show_entity_picture: false
+  - type: grid
+    cards:
+      - type: heading
+        heading: Temperature
+        heading_style: title
+      - type: thermostat
+        entity: climate.vent_vsr300
+        name: Ventilation
+        show_current_as_primary: false
+cards: []
+subview: true
+icon: mdi:hvac
+dense_section_placement: false
