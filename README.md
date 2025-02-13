@@ -36,8 +36,6 @@ HACS addons used:
 
 Image of my Control Panel with full settings. A feedback check is added for Setpoints, with a comparison of the input number and the VTR sensor. Green when matching, Red when matching/waiting for sync.
 
-<img src="https://github.com/Ztaeyn/HomeAssistant-VTR-Modbus/assets/58105460/8f39f98b-262c-4d0f-89ce-9f4b6302b91d" width="800">
-<img src="https://user-images.githubusercontent.com/58105460/212980462-d8833cf8-0271-4090-b510-cd9a067c1393.png" width="400">
 
 ![Default](https://github.com/user-attachments/assets/a0467636-c3ff-4790-8e7c-c02a383abb0c)
 
