@@ -29,25 +29,12 @@ Sources:
 * New Node-Red/HA code from GMTrevis: https://github.com/GMTrevis/Homeassistant-NodeRed-Systemair-VTR300
 
 HACS addons used:
-* https://github.com/thomasloven/lovelace-card-mod
-* https://github.com/custom-cards/button-card
-* https://github.com/htmltiger/numberbox-card
-* https://github.com/piitaya/lovelace-mushroom
-
-Image of my Control Panel with full settings. A feedback check is added for Setpoints, with a comparison of the input number and the VTR sensor. Green when matching, Red when matching/waiting for sync.
-
-<img src="https://github.com/Ztaeyn/HomeAssistant-VTR-Modbus/assets/58105460/8f39f98b-262c-4d0f-89ce-9f4b6302b91d" width="800">
-<img src="https://user-images.githubusercontent.com/58105460/212980462-d8833cf8-0271-4090-b510-cd9a067c1393.png" width="400">
+https://github.com/piitaya/lovelace-mushroom
 
 
+![Default](https://github.com/user-attachments/assets/a0467636-c3ff-4790-8e7c-c02a383abb0c)
 
-For the daily driver I have an overview with room cards displaying the operational state.
-
-<img src="https://user-images.githubusercontent.com/58105460/211211807-b32b8dc6-8816-4dd9-9e3c-e7384acd6bf9.png" width="400">
-
-With the room having a stripped down setup, linking via Config to the control panel.
-
-<img src="https://user-images.githubusercontent.com/58105460/211211838-831058e2-42f3-409c-b5d5-5fb6a4974f4a.png" width="400">
+![Show_Hidden](https://github.com/user-attachments/assets/d4873ae1-38c1-4ed0-8341-4194d6927988)
 
 
 
