@@ -353,8 +353,8 @@ sections:
           - type: numeric-input
             style: buttons
         type: tile
-        entity: input_number.vsr300_crowded_mode_duration_sp
-        name: Crowded
+        entity: input_number.vsr300_refresh_mode_duration_sp
+        name: Refresh
         vertical: false
         hide_state: true
         show_entity_picture: false
