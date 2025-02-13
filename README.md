@@ -29,9 +29,9 @@ Sources:
 * New Node-Red/HA code from GMTrevis: https://github.com/GMTrevis/Homeassistant-NodeRed-Systemair-VTR300
 
 HACS addons used:
-~ https://github.com/thomasloven/lovelace-card-mod ~
-~ https://github.com/custom-cards/button-card ~
-~ https://github.com/htmltiger/numberbox-card ~
+<delhttps://github.com/thomasloven/lovelace-card-mod</del>
+<delhttps://github.com/custom-cards/button-card</del>
+<delhttps://github.com/htmltiger/numberbox-card</del>
 * https://github.com/piitaya/lovelace-mushroom
 
 Image of my Control Panel with full settings. A feedback check is added for Setpoints, with a comparison of the input number and the VTR sensor. Green when matching, Red when matching/waiting for sync.
