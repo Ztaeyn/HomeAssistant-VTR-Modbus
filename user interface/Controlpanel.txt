@@ -105,7 +105,7 @@ sections:
               is_state('switch.vsr300_refresh_mode', 'on')%}
               Refresh 
               {% elif 
-              is_state('switch.vsr300_refresh_mode', 'on')%}
+              is_state('switch.vsr300_holiday_mode', 'on')%}
               Holiday  
               {% else %}
               Normal Operation
@@ -123,7 +123,7 @@ sections:
             Remaining:  {{ states('sensor.vsr300_refresh_countdown_time_t') |
             default('Not Set') }} 
               {% elif 
-              is_state('switch.vsr300_refresh_mode', 'on')%}
+              is_state('switch.vsr300_holiday_mode', 'on')%}
             Remaining:  {{ states('sensor.vsr300_holiday_countdown_time_t') |
             default('Not Set') }}
               {% else %}
@@ -139,7 +139,7 @@ sections:
               is_state('switch.vsr300_refresh_mode', 'on')%}
               mdi:fan-plus 
               {% elif 
-              is_state('switch.vsr300_refresh_mode', 'on')%}
+              is_state('switch.vsr300_holiday_mode', 'on')%}
               mdi:fan-remove
               {% else %}
               mdi:fan

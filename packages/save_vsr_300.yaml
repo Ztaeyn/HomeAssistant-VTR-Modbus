@@ -11,7 +11,6 @@ modbus:
     delay: 1            #Time to sleep in seconds after connecting and before sending messages (defualt=0)
     #message_wait_milliseconds: 50 #Increased to hopefully reduce errors in my serial comm (Default:30 for serial connection, 0 for all other connections.)
 
-
     climates:
       - name: vent_VSR300
         unique_id: vent_VSR300
@@ -26,7 +25,7 @@ modbus:
         target_temp_register: 2000
 
     sensors:
-# All addresses are a number lower than value in MODBUS variable list
+      # All addresses are a number lower than value in MODBUS variable list
       - name: vsr300_outdoor_temperature
         unique_id: vsr300_outdoor_temperature
         ##hub: VSR300
@@ -40,19 +39,19 @@ modbus:
         precision: 1
         data_type: int16
 
- # Removed due to HA2024.3 not allowing duplicate use of address. Replaced with template sensor under # SENSORS.
- #     - name: vsr300_supply_temperature
- #       unique_id: vsr300_supply_temperature
- #       ##hub: VSR300
- #       device_class: temperature
- #       slave: 1
- #       address: 12102
- #       input_type: holding
- #       unit_of_measurement: °C
- #       scale: 0.1
- #       offset: 0
- #       precision: 1
- #       data_type: int16
+      # Removed due to HA2024.3 not allowing duplicate use of address. Replaced with template sensor under # SENSORS.
+      #     - name: vsr300_supply_temperature
+      #       unique_id: vsr300_supply_temperature
+      #       ##hub: VSR300
+      #       device_class: temperature
+      #       slave: 1
+      #       address: 12102
+      #       input_type: holding
+      #       unit_of_measurement: °C
+      #       scale: 0.1
+      #       offset: 0
+      #       precision: 1
+      #       data_type: int16
 
       - name: vsr300_exhaust_temperature
         unique_id: vsr300_exhaust_temperature
@@ -469,7 +468,7 @@ modbus:
         input_type: holding
         unit_of_measurement: days
         data_type: uint16
-        scan_interval: 9        
+        scan_interval: 9
       - name: vsr300_away_mode_duration
         unique_id: vsr300_away_mode_duration
         #hub: VSR300
@@ -478,7 +477,7 @@ modbus:
         input_type: holding
         unit_of_measurement: h
         data_type: uint16
-        scan_interval: 9       
+        scan_interval: 9
       - name: vsr300_fireplace_mode_duration
         unique_id: vsr300_fireplace_mode_duration
         #hub: VSR300
@@ -487,7 +486,7 @@ modbus:
         input_type: holding
         unit_of_measurement: min
         data_type: uint16
-        scan_interval: 9        
+        scan_interval: 9
       - name: vsr300_refresh_mode_duration
         unique_id: vsr300_refresh_mode_duration
         #hub: VSR300
@@ -496,7 +495,7 @@ modbus:
         input_type: holding
         unit_of_measurement: min
         data_type: uint16
-        scan_interval: 9        
+        scan_interval: 9
       - name: vsr300_crowded_mode_duration
         unique_id: vsr300_crowded_mode_duration
         #hub: VSR300
@@ -505,7 +504,7 @@ modbus:
         input_type: holding
         unit_of_measurement: h
         data_type: uint16
-        scan_interval: 9        
+        scan_interval: 9
       - name: vsr300_moisture_extraction_sp
         unique_id: vsr300_moisture_extraction_sp
         #hub: VSR300
@@ -789,21 +788,52 @@ sensor:
   - platform: template
     sensors:
       vsr300_supply_air_rf:
-        value_template: "{{((states('sensor.vsr300_supply_air_fan') | int) * 3) | round(0) }}"
+        #value_template: "{{((states('sensor.vsr300_supply_air_fan') | int) * 3) | round(0) }}"
+
+        value_template: >-
+          {% if is_state('sensor.vsr300_supply_air_fan', 'unavailable') or is_state('sensor.vsr300_supply_air_fan', 'unknown') %}
+            unavailable
+          {% else %}
+            {{ ((states('sensor.vsr300_supply_air_fan') | float(0)) * 3) | round(0) }}
+          {% endif %}
         friendly_name: "Supply air flow rate"
         unique_id: vsr300_supply_air_rf
         unit_of_measurement: "m³/h"
   - platform: template
     sensors:
       vsr300_exhaust_air_rf:
-        value_template: "{{((states('sensor.vsr300_extractor_fan') | int) * 3) | round(0)}}"
+        #value_template: "{{((states('sensor.vsr300_extractor_fan') | int) * 3) | round(0)}}"
+        value_template: >-
+          {% if is_state('sensor.vsr300_extractor_fan', 'unavailable') or is_state('sensor.vsr300_extractor_fan', 'unknown') %}
+            unavailable
+          {% else %}
+            {{ ((states('sensor.vsr300_extractor_fan') | float(0)) * 3) | round(0) }}
+          {% endif %}
         friendly_name: "Exhaust air flow rate"
         unique_id: vsr300_exhaust_air_rf
         unit_of_measurement: "m³/h"
   - platform: template
     sensors:
       vsr300_recovery_rate:
-        value_template: "{{((((states('sensor.vsr300_supply_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float)) / ((states('sensor.vsr300_exhaust_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float))) * 100) | round(1) }}"
+        #value_template: "{{((((states('sensor.vsr300_supply_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float)) / ((states('sensor.vsr300_exhaust_temperature') | float ) - (states('sensor.vsr300_outdoor_temperature') | float))) * 100) | round(1) }}"
+        value_template: >-
+          {% if is_state('sensor.vsr300_supply_temperature', 'unavailable') or 
+                  is_state('sensor.vsr300_outdoor_temperature', 'unavailable') or 
+                  is_state('sensor.vsr300_exhaust_temperature', 'unavailable') or
+                  is_state('sensor.vsr300_supply_temperature', 'unknown') or 
+                  is_state('sensor.vsr300_outdoor_temperature', 'unknown') or 
+                  is_state('sensor.vsr300_exhaust_temperature', 'unknown') %}
+            unavailable
+          {% else %}
+            {% set supply = states('sensor.vsr300_supply_temperature') | float(0) %}
+            {% set outdoor = states('sensor.vsr300_outdoor_temperature') | float(0) %}
+            {% set exhaust = states('sensor.vsr300_exhaust_temperature') | float(0) %}
+            {% if (exhaust - outdoor) != 0 %}
+                {{ (((supply - outdoor) / (exhaust - outdoor)) * 100) | round(1) }}
+            {% else %}
+                0
+            {% endif %}
+          {% endif %}
         unit_of_measurement: "%"
         friendly_name: "Recovery rate"
         unique_id: vsr300_recovery_rate
@@ -938,8 +968,11 @@ sensor:
         friendly_name: "Time remaining when active - Holiday"
         unique_id: vsr300_holiday_countdown_time
         value_template: >-
-          {% if states('sensor.vsr300_mode_status_register')|int == 6 %}
-          
+          {% if is_state('sensor.vsr300_mode_status_register', 'unavailable') or 
+                is_state('sensor.vsr300_countdown_mode_time_s', 'unavailable') or 
+                is_state('sensor.vsr300_countdown_mode_time_s_factor', 'unavailable') %}
+            unavailable
+          {% elif states('sensor.vsr300_mode_status_register')|int == 6 %}
             {% set time = states('sensor.vsr300_countdown_mode_time_s')|int + (states('sensor.vsr300_countdown_mode_time_s_factor')|int * 65535) %}
             {% set days = (time / 86400) | int %}
             {% set hours = ((time % 86400) / 3600) | int %}
@@ -964,13 +997,15 @@ sensor:
             {%- endif -%}
           {% else %}
             Inactive
-          {% endif %}      
+          {% endif %}
 
       vsr300_summer_winter_operational_status:
         friendly_name: "Active season"
         unique_id: vs300_active_season01
         value_template: >-
-          {% if states('sensor.vsr300_summer_winter_operation')|int == 0 %}
+          {% if is_state('sensor.vsr300_summer_winter_operation', 'unavailable') %}
+            unavailable
+          {% elif states('sensor.vsr300_summer_winter_operation')|int == 0 %}
             Summer
           {% elif states('sensor.vsr300_summer_winter_operation')|int == 1 %}
             Winter
@@ -982,7 +1017,9 @@ sensor:
         friendly_name: "Regulation"
         unique_id: vsr300_regulation_mode
         value_template: >-
-          {% if states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 0 %}
+          {% if is_state('sensor.vsr300_supply_air_room_exhaust_reg', 'unavailable') %}
+            unavailable
+          {% elif states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 0 %}
             Supply air regulation
           {% elif states('sensor.vsr300_supply_air_room_exhaust_reg')|int == 1 %}
             Room regulation
@@ -996,7 +1033,10 @@ sensor:
         friendly_name: "Mode"
         unique_id: vsr300_mode_status
         value_template: >-
-          {% if states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 2 %}
+          {% if is_state('sensor.vsr300_mode_status_register', 'unavailable') or 
+          is_state('sensor.vsr300_manual_mode_command_register', 'unavailable') %}
+            unavailable
+          {% elif states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 2 %}
             Auto schedule - Low
           {% elif states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int == 3 %}
             Auto schedule - Normal           
@@ -1044,7 +1084,10 @@ sensor:
         friendly_name: "Manual button mode status"
         unique_id: vsr300_manual_button_mode_status
         value_template: >-
-          {% if states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int > 0 %}
+          {% if is_state('sensor.vsr300_mode_status_register', 'unavailable') or 
+          is_state('sensor.vsr300_manual_mode_command_register', 'unavailable') %}
+            unavailable
+          {% elif states('sensor.vsr300_mode_status_register')|int == 0 and states('sensor.vsr300_manual_mode_command_register')|int > 0 %}
             Auto schedule
           {% elif states('sensor.vsr300_mode_status_register')|int == 1 and states('sensor.vsr300_manual_mode_command_register')|int > 0 %}
             Manual
@@ -1205,6 +1248,14 @@ switch:
         verify_register: 2504
         state_on: 1
         state_off: 0
+
+################################################################################
+# INPUT BUTTON
+################################################################################
+input_button:
+  vsr300_clear_all_alarms:
+    name: "Clear All VSR300 Alarms"
+    icon: mdi:alert-remove
 
 ################################################################################
 # Script
@@ -1572,7 +1623,42 @@ script:
       service: input_boolean.turn_off
       entity_id: input_boolean.vsr300_holiday_mode_status_dummy
 
+  vsr300_send_notification:
+    alias: "Send VSR300 Notification"
+    description: "Send both persistent and phone notifications for VSR300 events"
+    fields:
+      title:
+        description: "Notification title"
+        example: "VSR300 Alert"
+      message:
+        description: "Notification message"
+        example: "This is an alert message"
+      notification_id:
+        description: "ID for persistent notification"
+        example: "vsr300_alert"
+      priority:
+        description: "Notification priority (normal/high/critical)"
+        example: "high"
+        default: "normal"
+    sequence:
+      # Persistent notification
+      - service: persistent_notification.create
+        data:
+          title: "{{ title }}"
+          message: "{{ message }}"
+          notification_id: "{{ notification_id }}"
 
+      # Phone notification
+      - service: notify.all_devices
+        data:
+          title: "{{ title }}"
+          message: "{{ message }}"
+          data:
+            channel: "vsr300_alerts"
+            importance: "{{ priority }}"
+            ttl: 0
+            sticky: true
+            tag: "{{ notification_id }}"
 ################################################################################
 # Automation
 ################################################################################
@@ -1593,12 +1679,12 @@ automation:
         data_template:
           entity_id: input_number.vsr300_eco_offset_temp_sp
           value: "{{ states('sensor.vsr300_eco_heat_offset') | int }}"
-        alias: Get setpoint eco offset temp        
+        alias: Get setpoint eco offset temp
   - id: "vsr300getsetpointaway"
     alias: VSR300 Get setpoint Away Duration
     mode: restart
     description: ""
-    trigger:        
+    trigger:
       - platform: state
         entity_id:
           - input_number.vsr300_away_mode_duration_sp
@@ -1614,7 +1700,7 @@ automation:
     alias: VSR300 Get setpoint Crowded Duration
     mode: restart
     description: ""
-    trigger:           
+    trigger:
       - platform: state
         entity_id:
           - input_number.vsr300_crowded_mode_duration
@@ -1630,7 +1716,7 @@ automation:
     alias: VSR300 Get setpoint Fireplace Duration
     mode: restart
     description: ""
-    trigger:                   
+    trigger:
       - platform: state
         entity_id:
           - input_number.vsr300_fireplace_mode_duration_sp
@@ -1646,7 +1732,7 @@ automation:
     alias: VSR300 Get setpoint Holiday Duration
     mode: restart
     description: ""
-    trigger:                            
+    trigger:
       - platform: state
         entity_id:
           - input_number.vsr300_holiday_mode_duration_sp
@@ -1662,7 +1748,7 @@ automation:
     alias: VSR300 Get setpoint Refresh Duration
     mode: restart
     description: ""
-    trigger:                   
+    trigger:
       - platform: state
         entity_id:
           - input_number.vsr300_refresh_mode_duration_sp
@@ -1683,12 +1769,12 @@ automation:
         data_template:
           entity_id: input_number.vsr300_exhaust_air_fan_speed_normal_sp
           value: "{{ states('sensor.vsr300_exhaust_air_fan_speed_normal') | int }}"
-        alias: Get setpoint away  
+        alias: Get setpoint away
   - id: "vsr300getsetpointfilter"
     alias: VSR300 Get setpoint Filter Replacement
     mode: restart
     description: ""
-    trigger:                   
+    trigger:
       - platform: state
         entity_id:
           - input_number.vsr300_filter_replacement_period_months_sp
@@ -1703,7 +1789,7 @@ automation:
 
   - id: "vsr300SetSetpointCrowded"
     alias: vsr300 Set Setpoint Crowded Mode
-#    unique_id: vsr300SetSetpointCrowded01
+    #    unique_id: vsr300SetSetpointCrowded01
     description: ""
     trigger:
       - platform: state
@@ -1719,7 +1805,7 @@ automation:
 
   - id: "vsr300SetSetpointEco"
     alias: vsr300 Set Setpoint Eco Mode
-#    unique_id: vsr300SetSetpointEco01
+    #    unique_id: vsr300SetSetpointEco01
     description: ""
     trigger:
       - platform: state
@@ -1735,7 +1821,7 @@ automation:
 
   - id: "vsr300SetSetpointFireplace"
     alias: vsr300 Set Setpoint Fireplace Mode
-#    unique_id: vsr300SetSetpointFireplace01
+    #    unique_id: vsr300SetSetpointFireplace01
     description: ""
     trigger:
       - platform: state
@@ -1748,7 +1834,7 @@ automation:
           unit: 1
           address: 1102
           value: "{{ states.input_number.vsr300_fireplace_mode_duration_sp.state | int }}"
-          
+
   - id: "vsr300SetSetpointAway"
     alias: vsr300 Set Setpoint Away Mode
     description: ""
@@ -1762,11 +1848,11 @@ automation:
           hub: VSR300
           unit: 1
           address: 1101
-          value: "{{ states.input_number.vsr300_away_mode_duration_sp.state | int }}"          
+          value: "{{ states.input_number.vsr300_away_mode_duration_sp.state | int }}"
 
   - id: "vsr300SetSetpointHoliday"
     alias: vsr300 Set Setpoint Holiday
-#    unique_id: vsr300SetSetpointHoliday01
+    #    unique_id: vsr300SetSetpointHoliday01
     description: ""
     trigger:
       - platform: state
@@ -1782,7 +1868,7 @@ automation:
 
   - id: "vsr300SetSetpointRefresh"
     alias: vsr300 Set Setpoint Refresh Mode
-#    unique_id: vsr300SetSetpointRefresh01
+    #    unique_id: vsr300SetSetpointRefresh01
     description: ""
     trigger:
       - platform: state
@@ -1828,7 +1914,7 @@ automation:
 
   - id: "vsr300SetSetpointFilter"
     alias: vsr300 Set Setpoint Filter Replacement
-#    unique_id: vsr300SetSetpointFilter01
+    #    unique_id: vsr300SetSetpointFilter01
     description: ""
     trigger:
       - platform: state
@@ -1841,3 +1927,157 @@ automation:
           unit: 1
           address: 7000
           value: "{{ states.input_number.vsr300_filter_replacement_period_months_sp.state | int }}"
+
+  - id: "vsr300_clear_all_alarms"
+    alias: vsr300 Clear All Alarms
+    description: "Clear all VSR300 alarms"
+    trigger:
+      - platform: state
+        entity_id: input_button.vsr300_clear_all_alarms
+    condition: []
+    action:
+      - service: modbus.write_register
+        data_template:
+          hub: VSR300
+          unit: 1
+          address: 15904
+          value: 1
+
+  - id: "vsr300_one_automation_notification"
+    alias: VSR300 Status Monitor and Notification
+    description: "Monitor VSR300 system and send appropriate notifications"
+    mode: queued
+    trigger:
+      # Filter replacement triggers
+      - platform: numeric_state
+        entity_id: sensor.vsr300_time_to_filter_replacement_s
+        below: 432000  # 5 days in seconds
+        id: "filter_soon"
+      - platform: numeric_state
+        entity_id: sensor.vsr300_time_to_filter_replacement_s
+        below: 1
+        id: "filter_now"
+      
+      # Alarm triggers - using individual alarm sensors
+      - platform: state
+        entity_id: sensor.vsr300_a_alarm
+        to: "1"
+        id: "type_a_alarm_on"
+      - platform: state
+        entity_id: sensor.vsr300_b_alarm
+        to: "1"
+        id: "type_b_alarm_on"
+      - platform: state
+        entity_id: sensor.vsr300_c_alarm
+        to: "1"
+        id: "type_c_alarm_on"
+      
+      # Alarm cleared triggers
+      - platform: state
+        entity_id: sensor.vsr300_a_alarm
+        from: "1"
+        to: "0"
+        id: "type_a_alarm_off"
+      - platform: state
+        entity_id: sensor.vsr300_b_alarm
+        from: "1"
+        to: "0"
+        id: "type_b_alarm_off"
+      - platform: state
+        entity_id: sensor.vsr300_c_alarm
+        from: "1"
+        to: "0"
+        id: "type_c_alarm_off"
+    action:
+      - choose:
+          # Filter soon
+          - conditions:
+              - condition: trigger
+                id: "filter_soon"
+              - condition: template
+                value_template: "{{ states('sensor.vsr300_time_to_filter_replacement_s')|int(0) > 0 }}"
+            sequence:
+              - service: script.vsr300_send_notification
+                data:
+                  title: "VSR300 Filter Replacement Required Soon"
+                  message: >-
+                    The VSR300 ventilation unit filter will need replacement soon. 
+                    Time remaining: {{ states('sensor.vsr300_time_to_filter_change_months') }}
+                  notification_id: vsr300_filter_reminder
+                  priority: high
+          
+          # Filter now
+          - conditions:
+              - condition: trigger
+                id: "filter_now"
+            sequence:
+              - service: script.vsr300_send_notification
+                data:
+                  title: "VSR300 FILTER REPLACEMENT REQUIRED!"
+                  message: >-
+                    The VSR300 ventilation unit filter needs to be replaced immediately!
+                    
+                    After replacing the filter, press the "Reset Filter Timer" button in the VSR300 control panel.
+                  notification_id: vsr300_filter_replacement_required
+                  priority: critical
+          
+          # Any alarm activated
+          - conditions:
+              - condition: or
+                conditions:
+                  - condition: trigger
+                    id: "type_a_alarm_on"
+                  - condition: trigger
+                    id: "type_b_alarm_on"
+                  - condition: trigger
+                    id: "type_c_alarm_on"
+            sequence:
+              - service: script.vsr300_send_notification
+                data:
+                  title: "VSR300 Alarm Activated"
+                  message: >-
+                    The VSR300 has active alarms!
+                    
+                    {% if is_state('sensor.vsr300_a_alarm', 'unavailable') %}
+                      Type A: Unknown
+                    {% else %}
+                      Type A: {{ 'Yes' if states('sensor.vsr300_a_alarm')|int(0) == 1 else 'No' }}
+                    {% endif %}
+                    
+                    {% if is_state('sensor.vsr300_b_alarm', 'unavailable') %}
+                      Type B: Unknown
+                    {% else %}
+                      Type B: {{ 'Yes' if states('sensor.vsr300_b_alarm')|int(0) == 1 else 'No' }}
+                    {% endif %}
+                    
+                    {% if is_state('sensor.vsr300_c_alarm', 'unavailable') %}
+                      Type C: Unknown
+                    {% else %}
+                      Type C: {{ 'Yes' if states('sensor.vsr300_c_alarm')|int(0) == 1 else 'No' }}
+                    {% endif %}
+                  notification_id: vsr300_alarm
+                  priority: high
+          
+          # All alarms cleared
+          - conditions:
+              - condition: or
+                conditions:
+                  - condition: trigger
+                    id: "type_a_alarm_off"
+                  - condition: trigger
+                    id: "type_b_alarm_off"
+                  - condition: trigger
+                    id: "type_c_alarm_off"
+              - condition: template
+                value_template: "{{ states('sensor.vsr300_a_alarm')|int(0) == 0 and states('sensor.vsr300_b_alarm')|int(0) == 0 and states('sensor.vsr300_c_alarm')|int(0) == 0 }}"
+            sequence:
+              - service: script.vsr300_send_notification
+                data:
+                  title: "VSR300 Alarms Cleared"
+                  message: "All alarms on the VSR300 ventilation unit have been cleared."
+                  notification_id: vsr300_alarm_cleared
+                  priority: normal
+              - service: persistent_notification.dismiss
+                data:
+                  notification_id: vsr300_alarm
+        default: []
