@@ -1,3 +1,6 @@
+# For info: I'm currently recreating this as a HACS-supported python integration, at a new project:
+# https://github.com/Ztaeyn/HA-VSR300-modbus-python-integration
+
 # HomeAssistant-VTR-Modbus
 Simple control of Systemair VTR(300) via modbus TCP (Wifi) directly to HA.
 
